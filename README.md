@@ -65,3 +65,7 @@ src/shared/layout/    不依賴上層功能的頁面容器
 下一步由人類檢視切版，再調整密度、字級、品牌色及主視覺。未來有授權 API 時替換 repository adapter，再加分頁、契約測試、CI／正式部署與更完整的無障礙檢查。
 
 詳見 [設計](DESIGN.md)、[架構](docs/architecture.md)、[取捨](docs/tradeoffs.md)、[差異矩陣](docs/comparison.md)。
+
+## 分層規範範例
+
+新增的 [src/libs](src/libs/README.md) 說明 apiservices、store（Business）與 UI utils 的責任、依賴方向及7份TypeScript文件範例。所有 `.example.ts.md` 均未接入應用程式；沒有狀態管理套件、真實HTTP呼叫或UI/mock遷移。未來再依實際需求建立 libs/hooks。

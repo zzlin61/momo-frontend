@@ -27,3 +27,9 @@ createMockProductRepository({ delayMs, error }) 支援固定行為。預設 app 
 DESIGN.md 記錄設計意圖與 canonical owners；src/app/global.css 擁有 runtime tokens。搜尋表單與結果元件無重複實作，無 UI framework。
 
 repository tests 驗證資料契約；App integration tests 驗證使用者操作；scripts/browser-smoke.mjs 使用 Node 內建 WebSocket 操作隔離 Chrome，無新增應用依賴。瀏覽器截圖、結果與限制列於 docs。
+
+## 後續三層規範與範例（未接入）
+
+人類已確認先新增 [src/libs 分層規範](../src/libs/README.md)，包含 apiservices、store（Business）與 UI utils。未來共用 hooks 有實際需要再建立。範例採 `.example.ts.md`，不是可執行或可匯入的 module；未安裝狀態管理套件，也未搬移目前頁面、hook、mock 或 fixtures。
+
+此為原始計畫後續的設計補充，不代表現行程式已完成三層遷移。實際遷移需另行確認範圍，維持 URL 狀態所有權、adapter seam 與現有使用者行為測試。

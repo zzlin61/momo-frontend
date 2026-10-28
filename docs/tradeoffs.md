@@ -26,3 +26,11 @@
 - 資料量小，全部顯示而不造假分頁。手機收起側欄以保留兩欄商品；已套用的品牌仍可用篩選標記移除。
 - 不做無目的登入、購物車或假商品詳情連結。若日後擴充交易，需要另外的領域與授權需求確認。
 - 本機瀏覽器工具無法啟動，改用現有Chrome headless及Node原生CDP smoke；未新增依賴。Python strict audit與designmd CLI驗證未完成，原因見 comparison.md。
+
+## 分層文件批次
+
+- 人類選擇先提交規範與範例，保留現有mock執行路徑，暫不安裝狀態管理套件。
+- `src/libs/apiservices`、`store`、`utils` 目前只放Markdown規範及 `.example.ts.md`；編譯時不加入未使用的示範程式。
+- 範例response是教學假設，mapper明確驗證unknown；不虛構momo端點或實際HTTP契約。Business模型在資料已足夠時直接重用正規化形狀，不增加無意義的二次拷貝。
+- 優點是作業能呈現分工、狀態所有權與未來測試方向；成本是文件本身尚不證明runtime分層，後續遷移需要重新驗證行為。
+- 正式遷移時以新module取代舊implementation並更新文件，不長期維護兩套路徑；libs/hooks等實際跨領域重用需求再建立。

@@ -83,3 +83,7 @@ Ask for approval before adding a major framework/dependency, changing the scope,
 ## Completion response format
 
 Provide: (1) implemented scope, (2) changed files, (3) actual commands/checks and outcomes, (4) key tradeoffs, (5) known limitations, (6) commit hashes if present, (7) next recommended step.
+
+## Planned libs layering (documentation only)
+
+When adding or reviewing `src/libs` conventions or examples, read `src/libs/README.md` first. These folders currently contain documentation examples only; the existing UI/mock execution path and dependencies remain in place until a separately authorized migration.

@@ -58,3 +58,15 @@
 - 限制：Python runtime不可用，技能Python strict audit未完成；designmd CLI未安裝，未增加未核准套件執行其lint。已使用專案TypeScript/測試/建置、瀏覽器與rg檢查；完整螢幕閱讀器、多平台IME與200%zoom仍待後續。
 - 下一步：人類檢視本機切版與截圖後討論密度、字級、主視覺及細部差異；本批不自行部署或擴充交易功能。
 - 最終交付檢查（14:19 +08:00）：lint exit0、test 23/23、build exit0（57 modules）、browser smoke exit0；review的手機名稱與701px溢出均已修正並由瀏覽器回歸驗證。git diff --check 已通過；沒有新增package依賴。切版commit將包含本紀錄及實際截圖，雜湊見git log。
+
+### 2026-10-28 15:06 +08:00 — libs 分層規範與未啟用範例
+
+- 人類確認：先新增分層規範及清楚標示的範例；現有UI/mock執行路徑維持原樣，暫不安裝狀態管理套件。
+- 新增 src/libs/README.md、apiservices/store/utils 各層README；7份 `.example.ts.md` 示範params/response/normalized record、runtime mapper、注入式資料來源、Business模型／純規則／狀態契約及UI金額格式化。
+- 範例只是文件：沒有加入可執行store、HTTP端點、狀態管理套件或libs/hooks空目錄；相對import說明為未來同名ts檔，不是現有可匯入module。response契約明確為教學假設。
+- 更新AGENTS的條件式閱讀入口、README、architecture與tradeoffs；原始IMPLEMENTATION_PLAN保持不變。規範明確區分未來分層與現行feature架構，不宣稱已遷移。
+- 使用writing-for-agents技能整理入口與單一規範來源；此為人類已確認的文件批次，未新增架構討論或依賴。
+- 驗證：將7份TypeScript code fence抽到OS暫存目錄 C:\Users\User\AppData\Local\Temp\momo-layer-examples-H4Bquf，依未來目錄還原成ts檔，以strict TypeScript noEmit檢查，exit0；libs內相對Markdown連結全部可解析。
+- 應用驗證：沿用既有本機pnpm入口執行lint exit0、test 23/23 passed、build exit0（57 modules）。產物仍為index-BFsGbPQ1.css及index-CIRc7F_p.js，與切版批次相同。範例只通過型別檢查，不宣稱已執行其runtime或新增測試覆蓋。
+- 此批不重跑瀏覽器截圖，因實際執行程式未改；最後以Git確認變更僅Markdown。已授權agent commits，提交訊息為 docs: define libs layering and inactive examples，hash見本提交git log。
+- 下一步：人類檢視規範後再決定是否遷移某一商品探索流程及使用哪個狀態管理implementation。
