@@ -1,4 +1,4 @@
-﻿import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createMockProductRepository } from './mockProductRepository';
 
 afterEach(() => vi.useRealTimers());

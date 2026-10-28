@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-28T06:20:02.079Z",
+  "browser": "Chrome headless via CDP",
+  "checks": [
+    "home 12 products",
+    "keyboard search and URL restoration",
+    "asics 8 results",
+    "price sort",
+    "ascis empty",
+    "clear focus",
+    "home/search no overflow at 320,390,701,768,1024,1440px",
+    "mobile search accessibility tree name",
+    "reduced motion",
+    "scrollbar token",
+    "no runtime errors",
+    "no external HTTP"
+  ],
+  "screenshots": [
+    "home-desktop",
+    "search-desktop",
+    "empty-desktop",
+    "home-mobile",
+    "search-mobile"
+  ],
+  "errors": [],
+  "external": []
+}

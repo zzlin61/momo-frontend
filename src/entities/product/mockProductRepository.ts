@@ -1,4 +1,4 @@
-﻿import { productFixtures } from '../../data/products';
+import { productFixtures } from '../../data/products';
 import type { Product } from './Product';
 import type { ProductRepository } from './ProductRepository';
 

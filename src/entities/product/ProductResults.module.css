@@ -1,0 +1,10 @@
+.grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; }
+.feedback { min-height:390px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:40px 20px; }
+.feedback h2 { font-size:19px; overflow-wrap:anywhere; margin:18px 0 8px; }.feedback p { color:var(--muted); font-size:13px; line-height:1.8; margin:0 0 24px; }
+.spinner {width:30px;height:30px;border:3px solid var(--brand-soft);border-top-color:var(--brand);border-radius:50%;animation:spin .8s linear infinite;}
+.symbol { width:55px;height:55px;border-radius:50%;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;font-size:28px;}
+.emptyArt {width:145px;height:115px;}
+.suggestions {display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+@keyframes spin {to {transform:rotate(360deg);}}
+@media(max-width:1000px) {.grid {grid-template-columns:repeat(3,minmax(0,1fr));}}
+@media(max-width:650px) {.grid {grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;} .feedback {min-height:350px;} }

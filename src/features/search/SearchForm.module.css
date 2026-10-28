@@ -1,0 +1,13 @@
+.wrapper { width: 100%; max-width: 620px; }
+.form { display: flex; align-items: center; border: 2px solid var(--brand); border-radius: 7px; background: var(--surface); height: 46px; overflow: hidden; }
+.form:focus-within { box-shadow: 0 0 0 3px var(--brand-soft); }
+.form input { border: 0; outline: 0; width: 100%; min-width: 0; padding: 10px 14px; background: transparent; color: var(--ink); font-size: 15px; }
+.form input::-webkit-search-cancel-button { display: none; }
+.submit { align-self: stretch; border: 0; background: var(--brand); color: var(--surface); display: flex; align-items: center; gap: 7px; padding: 0 20px; font-weight: 700; white-space: nowrap; }
+.submit:hover { background: var(--brand-dark); }
+.submit svg { width: 20px; fill: none; stroke: currentColor; stroke-width: 2; }
+.clear { background: transparent; border: 0; color: var(--muted); font-size: 23px; width: 40px; flex-shrink: 0; }
+.clear:hover { color: var(--brand); }
+.trending { display: flex; gap: 16px; font-size: 12px; color: var(--muted); margin-top: 8px; }
+.trending a:hover { color: var(--brand); }
+@media(max-width: 600px) { .trending { gap: 12px; font-size: 11px; } .submit { padding: 0 13px; } .submit span { display: none; } }

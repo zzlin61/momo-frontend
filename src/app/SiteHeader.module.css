@@ -1,0 +1,18 @@
+.header { background: var(--surface); }
+.utility { background: var(--page); border-bottom: 1px solid var(--line); font-size: 11px; color: var(--muted); }
+.utility > div { display: flex; justify-content: space-between; padding-block: 8px; }
+.utility b { color: var(--brand); }
+.main { display: flex; align-items: center; gap: 52px; padding-block: 25px 21px; }
+.logo { font-family: Arial, sans-serif; color: var(--brand); font-size: 54px; font-weight: 900; letter-spacing: -4px; line-height: .9; display: flex; align-items: baseline; flex-shrink: 0; }
+.logo span { font-family: var(--font-body); font-size: 13px; letter-spacing: 2px; margin-left: 10px; font-weight: 500; }
+.promise { display: flex; gap: 10px; align-items: center; margin-left: auto; white-space: nowrap; }
+.promiseIcon { border: 1px solid var(--brand); color: var(--brand); border-radius: 50%; width: 32px; height: 32px; display: grid; place-items: center; }
+.promise strong { font-size: 13px; }.promise small { display: block; color: var(--muted); font-size: 10px; margin-top: 3px; }
+.nav { border-bottom: 2px solid var(--brand); }
+.nav > div { display: flex; align-items: center; gap: 31px; min-height: 43px; font-size: 14px; font-weight: 700; }
+.nav a { white-space: nowrap; padding-block: 12px; }.nav a:hover { color: var(--brand); }
+.nav .all { background: var(--brand); color: var(--surface); width: 196px; padding-inline: 18px; flex-shrink: 0; }
+.all span { margin-right: 12px; }.navNote { margin-left: auto; color: var(--brand); font-size: 12px; }
+@media(max-width:1000px) { .main { gap: 28px; }.promise { display:none; }.nav > div { gap: 22px; }.navNote {display:none;} }
+@media(max-width:700px) { .utility > div > span:last-child { display:none; }.main { flex-wrap: wrap; gap: 18px; padding-block: 20px 14px; }.logo { font-size: 44px; }.main > div { max-width:none; }.nav > div { overflow-x: auto; gap: 23px; }.nav .all { width:auto; background:transparent; color:var(--brand); padding-inline:0; }.nav a { font-size: 12px; }.nav a:last-of-type { padding-right:10px; } }
+@media(max-width:1000px) { .nav > div { overflow-x: auto; } }

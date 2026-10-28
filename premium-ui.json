@@ -1,0 +1,14 @@
+{
+  "profile": "product-admin",
+  "sourceRoots": ["src"],
+  "locale": "zh-TW",
+  "canonicalMap": "DESIGN.md",
+  "requiredCapabilities": ["Form", "Scrollbar"],
+  "requiredCommands": ["unit", "typecheck", "build"],
+  "commands": {
+    "unit": "pnpm test",
+    "typecheck": "pnpm lint",
+    "build": "pnpm build"
+  },
+  "evidence": { "failurePaths": "src/app/App.test.tsx" }
+}

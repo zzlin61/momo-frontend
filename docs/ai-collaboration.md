@@ -43,3 +43,18 @@
 - 首次提交忠實包含已完成的骨架與商品資料層，不虛構先前已分批 commit。
 - 切版方向由 agent 在既定規格內決定：繁體中文、momo 粉紅品牌感、密集電商導覽、紫粉運動主視覺、自製 SVG 商品圖；首頁／搜尋／空結果共用 header 與商品呈現。無正式交易、登入或購物車。
 - 人類要求完成後再討論，因此沿用既定 IMPLEMENTATION_PLAN，不另行停下要求設計核准。新增 DESIGN.md 記錄 agent 設計決策。
+
+### 2026-10-28 14:18 +08:00 — 第三批：切版與驗證
+
+- 先前內容依人類授權提交為 bdc947b；新切版位於 feat/storefront-layout 分支，未 merge 或 push。
+- 完成：共享 header、分類導覽、搜尋表單、首頁活動主視覺與商品網格；搜尋頁結果數、品牌篩選、價格排序；loading/error/empty/success、重試與舊回應隔離；繁體中文、手機2欄、自製SVG圖像、設計tokens及DESIGN.md。
+- fixtures 擴為12筆（8筆ASICS），無新增套件、無momo API或外部HTTP資源；保持兩條既定路由與無交易範圍。
+- TDD：先寫10個storefront整合測試，觀察10 failed / 12 repository passed；實作後修正清除搜尋焦點遺失（route key 導致表單重建），22/22 passed；再加品牌篩選測試，23/23 passed。
+- 獨立唯讀review依 requesting-code-review 技能進行，發現手機搜尋按鈕 accessible name 因文字隱藏消失。先用Chrome accessibility tree得到失敗，再加 aria-label 修正；補測701px發現整頁寬703px，分類列改為1000px以下局部捲動，重測通過。
+- 本機IAB工具啟動失敗（找不到Node runtime），改用現有Chrome隔離headless profile及Node內建WebSocket/CDP。未使用個人瀏覽資料，profile不納入Git。
+- Browser smoke：真實Enter提交、URL回填、8筆asics、ascis空結果、價格排序、清除focus、1440/390px截圖，以及320/701/768/1024px溢出補測；無runtime exception或外部HTTP。5張實際PNG與JSON報告保留於docs。
+- 瀏覽器測試腳本曾因缺少Enter text事件及未等待React排序畫面而失敗；修正測試驅動及等待條件後通過，未把測試腳本失敗冒稱為產品bug。
+- 原始計畫保持不變；README、architecture、tradeoffs、comparison同步更新。真站未逐像素對照，不宣稱官方資產或像素一致。
+- 限制：Python runtime不可用，技能Python strict audit未完成；designmd CLI未安裝，未增加未核准套件執行其lint。已使用專案TypeScript/測試/建置、瀏覽器與rg檢查；完整螢幕閱讀器、多平台IME與200%zoom仍待後續。
+- 下一步：人類檢視本機切版與截圖後討論密度、字級、主視覺及細部差異；本批不自行部署或擴充交易功能。
+- 最終交付檢查（14:19 +08:00）：lint exit0、test 23/23、build exit0（57 modules）、browser smoke exit0；review的手機名稱與701px溢出均已修正並由瀏覽器回歸驗證。git diff --check 已通過；沒有新增package依賴。切版commit將包含本紀錄及實際截圖，雜湊見git log。
