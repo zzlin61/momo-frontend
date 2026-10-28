@@ -31,3 +31,11 @@ SearchPage將state、brand、sort交給productRules投影；不重複保存count
 DESIGN.md記錄設計與canonical UI owner；app/global.css擁有runtime tokens。CSS、SVG與markup保持，沒有UI重設計。原有repository與App行為測試繼續驗證資料與搜尋契約，scripts/browser-smoke.mjs驗證實際瀏覽器流程及RWD。
 
 7份example.ts.md仍是教學文件，與正式ts檔有清楚區分；狀態管理及真實response契約需要未來另外決定。
+
+## 商品詳情（本次授權擴充）
+
+ProductRepository新增getById，接受stable id或productCode，回傳ProductDetailRecord或null。data/productDetails從原12筆自編商品產生描述、規格、兩色及可選尺寸，既有名稱／價格／ID不改；第一筆增加15745582作為本機品號，並不代表真站資料。
+
+mock adapter支援與其他操作相同的固定delay/error，詳情以structuredClone隔離巢狀資料。Business新增useProductDetail，以repository/id/revision關聯結果並用effect cleanup防止舊回應；productDetailRules驗證選項、數量並計算總價。未安裝狀態管理套件。
+
+ProductPage組合圖集、ProductPurchase、描述及規格。商品卡Link在Router state保留內部來源路徑；返回只接受/或/search/開頭，否則回品牌搜尋。商品頁legacy query不參與mock查找。頁面依載入／錯誤／不存在／成功設定title；顏色切換清空尺寸，商品id切換重設整個選購草稿，所有選購確認都是本頁示範。

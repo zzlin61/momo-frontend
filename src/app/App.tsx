@@ -1,3 +1,4 @@
+import { ProductPage } from '../pages/ProductPage';
 import { useEffect } from 'react';
 import { Route, Routes, useLocation, useMatch } from 'react-router';
 import { HomePage } from '../pages/HomePage';
@@ -13,7 +14,7 @@ export function App({ repository = defaultRepository }: { repository?: ProductRe
   const location = useLocation();
   const match = useMatch('/search/:keyword');
   useEffect(() => {
-    document.title = match ? (match.params.keyword ?? '') + ' 搜尋結果 | momo 前端展示' : 'momo 購物網｜生活好物，喜歡就選';
+    if (!location.pathname.startsWith('/product/')) document.title = match ? (match.params.keyword ?? '') + ' 搜尋結果 | momo 前端展示' : 'momo 購物網｜生活好物，喜歡就選';
     if (location.pathname !== '/') document.getElementById('main-content')?.focus();
   }, [location.pathname, match?.params.keyword]);
   return <>
@@ -21,6 +22,7 @@ export function App({ repository = defaultRepository }: { repository?: ProductRe
     <SiteHeader />
     <PageShell>
       <Routes>
+        <Route path="/product/:productId" element={<ProductPage repository={repository} />} />
         <Route path="/" element={<HomePage repository={repository} />} />
         <Route path="/search/:keyword" element={<SearchPage repository={repository} />} />
       </Routes>

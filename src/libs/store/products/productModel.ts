@@ -7,3 +7,4 @@ export type ProductState =
   | { status: 'loading' }
   | { status: 'error' }
   | { status: 'success'; products: Product[] };
+export type { ProductDetailRecord as ProductDetail } from '../../apiservices/products/types/ProductDetailRecord';

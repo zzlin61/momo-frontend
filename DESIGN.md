@@ -72,7 +72,7 @@ Runtime ownership: src/app/global.css 為 canonical token source；此 frontmatt
 
 ## Shapes
 
-容器 7px、動作 4px；相關搜尋詞為 pill，radio 以圓形表示。搜尋欄高46px。所有互動提供 focus-visible 與 hover；商品卡無詳情頁，因此保留非互動 article 語意。
+容器 7px、動作 4px；相關搜尋詞為 pill，radio 以圓形表示。搜尋欄高46px。所有互動提供 focus-visible 與 hover；商品卡為article內的完整Link，保留可讀商品資訊與鍵盤focus，連至本機詳情頁。
 
 ## Components
 
@@ -81,6 +81,7 @@ Canonical ownership: SearchForm → components/search；ProductArtwork/ProductCa
 | Capability | Canonical owner | Source of truth | Allowed variants | Verification |
 |---|---|---|---|---|
 | Form | components/search/SearchForm.tsx | AGENTS.md URL and UX contract | explicit submit / clear | src/app/App.test.tsx |
+| Product selection | components/product/ProductPurchase.tsx | AGENTS.md product detail contract | native radio / quantity stepper | src/app/ProductPage.test.tsx |
 | Scrollbar | app/global.css | DESIGN.md | system forced-colors | browser smoke |
 
 搜尋提交 trim 後導航，空白與 IME composition 不導航；clear 立即清空、返回首頁並保留輸入焦點。pathname 是 keyword 唯一來源，表單同步回填。排序與品牌存在 URL query，legacy query 不影響搜尋。排序採按鈕，不需 Select/Listbox。無其他未實作的可點擊假功能。
@@ -95,3 +96,12 @@ loading 為固定區域 app spinner；error 提供重試；empty 提供 asics �
 - 使用本機 SVG，不下載商標或真實商品資產；文字 momo 僅為作業展示辨識。
 - 不新增假 cart、登入、輪播或無作用按鈕。
 - 不宣稱像素一致、真實優惠或官方交易能力。
+
+
+## 商品詳情擴充
+
+/product/:productId由人類本次授權新增，使用與首頁／搜尋相同shell。桌面上半部左右圖集／選購資訊，750px以下單欄；商品圖保留比例。下方商品介紹、規格、說明以錨點導覽，沒有假tab或無作用交易按鈕。
+
+ProductGallery與ProductPurchase歸components/product，ProductPage只連接路由、狀態與頁面組合。原生fieldset/legend/radio保有Tab及方向鍵操作；隱藏radio仍可focus，label以focus-within呈現輪廓。錯誤有alert與欄位說明，確認有具名status；選項或數量改變時清除過期確認。未使用select、modal或新的互動套件。
+
+顏色／尺寸／數量為UI草稿，Business驗證是否可選與數量範圍並計算確認總價；不建立cart、付款或訂單。圖集僅自製SVG的示意視角，不是官方產品照片。參考頁只用於資訊結構，不宣稱逐像素一致或真實報價。

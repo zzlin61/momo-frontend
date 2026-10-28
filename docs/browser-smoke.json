@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-28T07:24:29.721Z",
+  "date": "2026-10-28T07:44:10.095Z",
   "browser": "Chrome headless via CDP",
   "checks": [
     "home 12 products",
@@ -13,14 +13,23 @@
     "reduced motion",
     "scrollbar token",
     "no runtime errors",
-    "no external HTTP"
+    "no external HTTP",
+    "product direct URL and legacy query",
+    "selection validation, color reset and quantity",
+    "gallery controls",
+    "product mobile accessibility and responsive layout",
+    "return to sorted/filtered search",
+    "unknown product distinct state"
   ],
   "screenshots": [
     "home-desktop",
     "search-desktop",
     "empty-desktop",
     "home-mobile",
-    "search-mobile"
+    "search-mobile",
+    "product-desktop",
+    "product-mobile",
+    "product-mobile-options"
   ],
   "errors": [],
   "external": []

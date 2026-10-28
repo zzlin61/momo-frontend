@@ -24,6 +24,8 @@ pnpm preview
 - `/`：共享搜尋導覽、商品分類、運動主視覺、精選商品、生活提案與 footer。
 - `/search/asics`：8 筆 ASICS 示範商品。
 - `/search/ascis`：明確空結果與可操作的搜尋建議。
+- `/product/15745582`：商品詳情示範；所有商品卡可進入自己的 `/product/:productId`，支援直接載入及原搜尋條件返回。
+- 商品頁含自製圖集、顏色／尺寸／數量、規格及選購確認；無真實購物車或訂單，尺寸可選性為示範設定。
 - 其他關鍵字：依名稱／品牌／標籤作大小寫不敏感的子字串比對，trim 後空白不導頁。
 - 搜尋可用 Enter；IME 組字時不提早提交。clear 清空並回首頁，保留搜尋欄焦點。
 - 搜尋路徑為 keyword 狀態來源；直接載入、重新整理、返回均由 Router 還原。
@@ -49,7 +51,7 @@ src/data/             fixtures，僅供 mock adapter 直接讀取
 
 ## 驗證與畫面
 
-23 個 repository／UI 測試涵蓋搜尋、空結果、資料隔離、延遲、錯誤、重試、清除焦點、IME、排序、品牌篩選與過期回應。實際紀錄見 [協作紀錄](docs/ai-collaboration.md)。
+37 個 repository／Business／UI 測試涵蓋搜尋、空結果、資料隔離、延遲、錯誤、重試、清除焦點、IME、排序、品牌篩選與過期回應。實際紀錄見 [協作紀錄](docs/ai-collaboration.md)。
 
 [瀏覽器 smoke 報告](docs/browser-smoke.json) 使用已安裝 Chrome headless，檢查1440px與390px、真實 Enter 搜尋、價格排序、空結果、focus、無整頁溢出與無外部請求。重跑需要本機 dev 5174、隔離 Chrome 的9224 debugging port，再執行 `node scripts/browser-smoke.mjs`；無額外套件。腳本不碰個人 profile。
 
@@ -58,10 +60,13 @@ src/data/             fixtures，僅供 mock adapter 直接讀取
 - [空結果桌面](docs/screenshots/empty-desktop.png)
 - [首頁手機](docs/screenshots/home-mobile.png)
 - [搜尋手機](docs/screenshots/search-mobile.png)
+- [商品頁桌面](docs/screenshots/product-desktop.png)
+- [商品頁手機](docs/screenshots/product-mobile.png)
+- [商品頁手機選項](docs/screenshots/product-mobile-options.png)
 
 ## 取捨、差距與後續
 
-此版保留 momo 粉紅搜尋與電商資訊結構，但採用原創運動選物視覺；沒有逐像素比較，也未複製真站圖片或 logo 檔。會員、購物車、結帳、完整商品分類、詳情頁、分頁與進階篩選不在本次範圍。商品卡是可讀 article，不假裝能打開尚未存在的詳情頁。
+此版保留 momo 粉紅搜尋與電商資訊結構，但採用原創運動選物視覺；沒有逐像素比較，也未複製真站圖片或 logo 檔。會員、持久化購物車、結帳、完整分類、分頁與進階篩選不在本次範圍。商品卡使用真實連結進入本機詳情頁；選購確認僅顯示此次選擇，不送出訂單。
 
 下一步由人類檢視切版，再調整密度、字級、品牌色及主視覺。未來有授權 API 時替換 repository adapter，再加分頁、契約測試、CI／正式部署與更完整的無障礙檢查。
 

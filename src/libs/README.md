@@ -65,3 +65,7 @@ URL與請求快照不是兩個可分別修改的查詢來源。首頁與搜尋�
 ## 2026-10-28 搬遷驗證
 
 執行 `pnpm check:layers` 檢查靜態import/export：資料來源不得依賴Business/UI、Business不得依賴UI、utils保持純工具、UI不可直接引用資料來源。它使用既有TypeScript parser，不增加套件；動態import與未來alias需擴充檢查策略。目前沒有這類引用。
+
+## 商品詳情擴充
+
+商品路由／productId由Router擁有；資料來源新增getById與ProductDetailRecord，Business新增useProductDetail／productDetailRules，UI新增ProductPage／ProductGallery／ProductPurchase。商品選購確認只存在本頁，離開或換商品即重設，不是購物車。層級依賴仍以check:layers檢查。

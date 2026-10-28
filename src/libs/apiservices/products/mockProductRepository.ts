@@ -1,3 +1,4 @@
+import { productDetailFixtures } from '../../../data/productDetails';
 import { productFixtures } from '../../../data/products';
 import type { ProductRecord } from './types/ProductRecord';
 import type { ProductRepository } from './ProductRepository';
@@ -22,6 +23,11 @@ export function createMockProductRepository(
   }
 
   return {
+    async getById(productId) {
+      await respond([]);
+      const product = productDetailFixtures.find(item => item.id === productId || item.productCode === productId);
+      return product ? structuredClone(product) : null;
+    },
     listFeatured() {
       return respond(productFixtures);
     },

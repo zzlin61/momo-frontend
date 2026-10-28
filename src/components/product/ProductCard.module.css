@@ -9,3 +9,5 @@
 .price > span { font-size:15px; margin-right:3px; }
 .bottom { display:flex; gap:5px; justify-content:space-between; font-size:10px; color:var(--muted); border-top:1px solid var(--line); padding-top:12px; }.bottom > span:first-child {color:var(--brand);}
 @media(max-width:600px) { .body {padding:12px;} .body h3 {font-size:14px;} .price {font-size:25px;} .label {top:8px;left:8px;} }
+.link { display: block; height: 100%; }
+.link:focus-visible { outline-offset: -3px; border-radius: var(--radius); }

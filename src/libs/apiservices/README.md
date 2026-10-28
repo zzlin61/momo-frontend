@@ -32,3 +32,7 @@ apiservices/
 依序閱讀 [型別](products/types/searchProducts.example.ts.md)、[mapper](products/productMapper.example.ts.md)、[資料來源](products/productSource.example.ts.md)。
 
 未來轉為正式程式時，測試應涵蓋有效／空回應、null tags、無效金額、必要欄位缺失、資料來源錯誤；透過 adapter interface 測試，不只斷言 mapper 函式存在。此批沒有新增 runtime 測試。
+
+## 商品詳情資料來源
+
+ProductRepository已新增getById(productId)，回傳ProductDetailRecord或null；支援stable id與可選productCode。types/ProductDetailRecord.ts定義自編規格／配色／尺寸形狀，data/productDetails.ts提供本機資料。巢狀結果深複製，沿用固定delay/error；沒有真正HTTP回應或DTO清洗需求，教學mapper仍未啟用。

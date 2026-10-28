@@ -85,3 +85,18 @@
 - 最終驗證：pnpm入口依次執行check:layers exit0、lint exit0、test 23/23 passed、build exit0（59 modules）；CSS仍index-BFsGbPQ1.css。Chrome browser-smoke exit0，無runtime例外或外部HTTP，原桌面／手機流程與各寬度通過，截圖報告更新。
 - 保留既有未知sort與error標題文案的行為；本次不混入功能修正。依賴檢查目前限static import/export，未聲稱覆蓋dynamic import或未來alias。
 - 已授權提交，訊息refactor: migrate storefront into three-layer structure；hash見本提交git log。下一步由人類檢視新歸屬，再決定狀態管理或獨立功能改善。
+
+### 2026-10-28 15:44 +08:00 — 商品詳情功能
+
+- 人類要求：參考momo商品15745582，按現有架構及規範新增商品頁。本次明確授權擴充初版路由，不改寫原始IMPLEMENTATION_PLAN。
+- 參考讀取：含追蹤query網址在web工具無法讀取；移除query後https://www.momoshop.com.tw/product/15745582可讀，僅確認圖集、品號、價格、顏色／尺寸／數量及資訊區結構。沒有呼叫momo API、抓取資產或將真實報價寫入本機。
+- 先記錄docs/superpowers/plans/2026-10-28-product-detail.md。維持12筆原商品及名稱／價格，第一筆新增productCode15745582；所有卡片進入自己的本機詳情，參考code不是官方資料對應承諾。
+- apiservices：ProductDetailRecord與getById、深複製、延遲錯誤及null未找到。data：自編描述／規格／兩色與尺寸可選性。Business：useProductDetail管理retry與過期回應，productDetailRules驗證選項及數量、計算總額。UI：ProductPage組合圖集／選購／介紹規格；卡片Link及返回搜尋條件。
+- 範圍：本機選購確認，無cart持久化、登入、付款或訂單；未安裝套件。教學examples保持未啟用。
+- TDD：新增5個getById測試先全部失敗於缺少方法，實作後28/28通過；新增8個商品UI測試先全部失敗於缺少路由／連結，選購規則另以stub觀察true/false斷言失敗，再實作。最終37/37通過。
+- 中途UI測試發現output帶隱含status，將選購確認加具名aria-label區分；瀏覽器smoke首次因測試selector引號錯誤停止，修正測試字串後通過，不冒稱是產品錯誤。
+- 獨立唯讀review未發現Critical/Important，另自行重跑check:layers通過；其測試重跑因sandbox的esbuild存取限制未啟動。主代理在已放行方式執行全套測試成功。
+- 最終檢查：check:layers exit0（25runtime／79 imports）、lint exit0、test 37/37、build exit0（68modules）。package.json、lockfile及原始IMPLEMENTATION_PLAN無變更。
+- Chrome smoke：保留原首頁／搜尋驗證，新增商品直接URL／legacy query、缺頁、選項驗證與focus、換色清空尺寸／確認、數量及總額、圖集、native radio方向鍵、返回原sort/brand、mobile AX tree及320至1440px無溢出。無runtime例外或外部HTTP；新增3張商品桌面／手機／選項PNG，已視覺檢視。
+- 文件同步：AGENTS、README、DESIGN、architecture、tradeoffs、comparison及libs規範；仍未做真站pixel comparison、完整螢幕閱讀器或正式交易驗證。先前Python/designmd工具限制未解決，未宣稱通過額外靜態稽核。
+- 依既有agent commit授權提交，建議訊息feat(product): add mock product detail page，hash見本提交git log。下一步由人類檢視商品頁視覺與流程後調整。

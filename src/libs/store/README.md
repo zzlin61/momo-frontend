@@ -33,3 +33,7 @@ store/
 8. 搬遷後的useProducts保留既有cleanup、retry與兩頁使用者行為測試；沒有改用未啟用的store action範例。
 
 未來驗收需包含 sort 無效值預設、篩選與排序不修改原資料、error/retry、路由快速切換、清除與卸載後回應、首頁／搜尋隔離，以及測試之間的 store 隔離。
+
+## 商品詳情Business
+
+useProductDetail已接入：以repository／productId／revision辨識回應，提供loading/error/not-found/success與retry，cleanup忽略失效結果。productDetailRules驗證顏色、可選尺寸、整數數量範圍並計算選購總價；UI仍擁有選項草稿。沒有將確認結果放進全域cart或套件store。

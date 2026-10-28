@@ -6,7 +6,7 @@ Implement the **Mocking momoshop** take-home as a maintainable, intentionally sm
 
 ## Non-negotiable constraints
 
-1. Implement only `/` and `/search/:keyword` in the first pass; support results for `asics` and an empty state for `ascis` through deterministic mock data.
+1. Implement `/`, `/search/:keyword`, and `/product/:productId`; the human explicitly authorized the product route on 2026-10-28 after the first pass. Support `asics` results and `ascis` empty state through deterministic mock data.
 2. **No calls to real momoshop APIs, scraping, authentication, or external production endpoints.** Reference URLs are for comparison only.
 3. Use React + TypeScript + Vite + React Router, CSS Modules, pnpm, Vitest and React Testing Library unless the human approves a change.
 4. Prefer a single application with feature-oriented modules; **do not add Nx, Redux, Next.js, a UI framework, or a new package without explaining the need and getting approval**.
@@ -50,6 +50,14 @@ After each batch:
 - Results render clear loading, error, empty and success states; avoid stale response overwrites on rapid query changes.
 - Existing query params like `?_isFuzzy=0&searchType=1` may be ignored with a documented decision; do not implement fuzzy search by accident.
 - Accessible search label, semantic headings, keyboard submission, sensible focus and responsive grid are minimum UX quality.
+
+## Product detail contract
+
+- Product cards link to local product detail and retain the originating search path/query for the return link.
+- ProductRepository.getById accepts a stable mock ID or product code, resolves detail or null, and preserves configured delay/error behavior.
+- Detail loading/error/not-found/success are distinct; obsolete responses cannot overwrite a newer product.
+- Color/size/quantity selection and confirmation are local demonstrations, not a cart, checkout or order. Validate options in Business; UI owns draft selection and focus.
+- Product code 15745582 maps to a local demo. Reference pages guide structure only; retain original demo names/prices and locally authored artwork.
 
 ## Tests and quality gates
 
