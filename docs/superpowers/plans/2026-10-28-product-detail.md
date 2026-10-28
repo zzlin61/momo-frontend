@@ -1,5 +1,8 @@
 # Product detail implementation plan
 
+> **已完成的歷史計畫，實作提交62f611c。** 下方描述／規格錨點是當時設計，已由後續頁內tabs取代；推薦與瀏覽紀錄也已交付。現況見[現行架構](../../architecture.md)及[tabs/discovery計畫](2026-10-28-product-tabs-discovery.md)，原始步驟保留供追溯。
+
+
 Goal: 新增 /product/:productId 與可直接開啟的15745582示範詳情頁，保留現有三層、mock與搜尋行為。
 Architecture: apiservices擴充getById與detail record；data提供自編規格；Business hook負責讀取、重試與過期回應，純規則驗證選項；UI負責圖集、尺寸顏色、數量及本機選購確認。
 Tech stack: 沿用React/TS/Vite/Router/CSS Modules與既有測試套件，不新增狀態管理。

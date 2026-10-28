@@ -1,5 +1,8 @@
 # Product discovery worktree log
 
+> **隔離worktree歷史紀錄。** 原提交fab0181，整合提交f11c7f7；ProductPage接線已於2b34f15完成。下方45個測試只代表該agent當時的worktree，不是現行主專案數量。見[整體驗證](verification.md)與[協作歷程](ai-collaboration.md)。
+
+
 2026-10-28 — isolated `feat/product-discovery`, base `df12543`.
 
 - Scope: recommendation/history presentation, Business ordering and async coordination, browser-storage adapter. ProductPage integration remains with the root agent.

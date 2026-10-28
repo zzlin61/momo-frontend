@@ -1,5 +1,25 @@
 # Momo Frontend Take-home — Implementation Plan
 
+> **文件定位：原始規劃 baseline。** 下方初版內容保留，不作現行目錄或功能指令；現行架構見 [docs/architecture.md](docs/architecture.md)，交付及驗證見 [README](README.md)、[docs/verification.md](docs/verification.md)。
+
+## 已授權的後續演進（2026-10-28整理）
+
+| 初版規劃 | 目前結果 |
+|---|---|
+| 首頁與搜尋兩條路由 | 保留並擴充/product/:productId，含15745582本機示範 |
+| feature-oriented entities/features/shared | 已依三層責任搬遷components、libs/apiservices、libs/store、libs/utils；見[搬遷對照](docs/layer-migration.md) |
+| URL與React本地state | 保留；Business仍為React hooks，未安裝Zustand |
+| 初版商品詳情不在範圍 | 人類後續授權圖集、選項、規格與本機選購確認 |
+| 未規劃tabs／推薦／history | 已新增不改URL的tabs、同品牌推薦、本機ID瀏覽紀錄；見[完成計畫](docs/superpowers/plans/2026-10-28-product-tabs-discovery.md) |
+| 單一路徑實作 | 兩個獨立worktree由subagents並行，再整合驗證；歷史見[協作紀錄](docs/ai-collaboration.md) |
+
+原始P0主要流程已實作，現行10個測試檔／51個案例；未實作的交易、完整真站功能與驗證限制見[comparison](docs/comparison.md)。時間盒只代表當時目標，不宣稱符合原估算耗時。下面的draft狀態、目錄與步驟為原文歷史。
+
+---
+
+## 原始規劃原文
+
+
 > Status: Phase 1 planning draft. Owner: human candidate. Implementation agent: Codex CLI. Date: 2026-10-28.
 
 ## 1. Assignment and interpretation

@@ -1,33 +1,42 @@
-# 對照與限制
+# 參考差異與已知限制
 
-本次依既定作業文字需求與 momo 熟悉的資訊結構實作。沒有抓取真站或執行真站逐畫面比較；以下是預期結構差距，不是像素一致性報告。
+本作品沿用 momo 熟悉的搜尋與商品資訊結構，內容為本機自編資料與自製SVG。商品參考頁曾以可讀內容確認資訊區塊；沒有真站逐畫面／逐像素驗證，也沒有下載官方圖片或呼叫其API。
 
-| 區域 | 本版 | 狀態 |
+## 功能與呈現對照
+
+| 區域 | 本版 | 判定 |
 |---|---|---|
-| 共享 header／搜尋 | 粉紅文字識別、搜尋框、熱門詞、分類導覽 | approximate |
-| 首頁 | 分類側欄、運動主視覺、兩塊促銷、精選商品 | approximate |
-| 商品網格 | 自製 SVG、品牌、名稱、標籤、NTD價格 | intentional divergence |
-| 搜尋 | URL keyword、結果數、排序、品牌篩選 | approximate |
-| 空結果 | 示意圖、修正提示、asics建議、回首頁 | approximate |
-| 手機版 | 水平導覽、兩欄卡片、隱藏側欄 | intentional divergence |
-| logo／產品照片／實際優惠 | 無官方圖像資產，只有文字辨識與自編資料 | intentional divergence |
-| 商品詳情頁 | 圖集、規格、選項與本機選購確認 | approximate |
-| 會員／持久化購物車／交易 | 本次不提供 | missing / out of scope |
+| Header／搜尋 | 粉紅文字識別、搜尋框、熱門詞、分類導覽 | approximate |
+| 首頁 | 分類、運動主視覺、促銷與商品網格 | approximate |
+| 商品圖／價格 | 自製SVG與自編示範報價 | intentional divergence |
+| 搜尋 | keyword URL、結果數、品牌及價格排序 | approximate |
+| 空結果 | 修正提示、asics建議與回首頁 | approximate |
+| 商品詳情 | 圖集、規格選項、數量與本機確認 | approximate |
+| 資訊切換 | 本地tabs，不改pathname/query/hash | 人類指定的互動契約 |
+| 推薦 | 排除自己、同品牌優先，最多4件 | intentional divergence |
+| 瀏覽紀錄 | 成功瀏覽的本機canonical IDs，可清除 | intentional divergence |
+| 手機 | 兩欄商品、單欄詳情、可捲動分類導覽 | intentional divergence |
+| 會員／cart／交易 | 未提供 | out of scope |
+
+## 已知程式缺口
+
+- 搜尋失敗時，下方error/retry正確，但標題的count為null，仍顯示「商品載入中」。
+- 不支援的sort值會保留於query；資料使用原順序，排序按鈕沒有active項。文件範例中的fallback正規化尚未接入。
+- 未提供任意未知路徑的全站404；僅商品不存在有明確not-found。
+- 瀏覽紀錄儲存不可用時不阻斷詳情，但不保證保存；無跨分頁即時同步。歷史明細單筆失敗／不存在會忽略，不另列錯誤。
+- 圖集為自製SVG的示意視角，非官方實拍／真正3D旋轉；數量5與尺寸可選性是demo設定。
+
+- 本次重跑觀察到React重複key警告；[ProductPage](../src/pages/ProductPage.tsx)三個同層商品區塊使用相同product.id作key。此警告尚未修正。
+- [ProductPage.test](../src/app/ProductPage.test.tsx)的直接商品URL案例曾因document.title仍為載入文字而失敗（50/51）；單檔8/8與之後全套51/51通過。測試沒有獨立等待title effect，存在時序風險；尚未判定根因或宣稱已根治。
+
+以上維持程式現況，文件整理不修正功能，也不將缺口隱藏在「完整完成」宣稱中。
 
 ## 驗證界線
 
-- 已檢視5張瀏覽器截圖；桌面1440×1100與手機390×844的首頁／搜尋，另有桌面空結果。
-- 測試 loading/error/retry/stale response 為元件測試；瀏覽器 smoke 未注入錯誤 adapter。
-- 未做完整螢幕閱讀器、各系統 IME、200% zoom、所有瀏覽器／裝置矩陣或自動 axe 掃描。
-- frontend-design-premium 的 Python audit 無可用 Python runtime；DESIGN.md 專屬 CLI 未安裝，未為此引入未核准套件。這兩項未完成，不宣稱 static strict audit 或 designmd lint 已通過。
-- 原始 IMPLEMENTATION_PLAN.md 不改寫；完整計畫的時間目標不是本次實際耗時宣稱。提交及協作紀錄維持真實時間。
+目前有51個測試與11張Chrome截圖；實際範圍及證據日期見 [verification](verification.md)。元件測試涵蓋載入、錯誤、重試及過期回應；Chrome smoke未注入錯誤adapter。
 
-## 商品詳情對照補充
+尚未完成完整螢幕閱讀器、多平台實體IME、200%zoom、所有瀏覽器／裝置矩陣、axe掃描、CI或正式部署。合成IME事件測試不等於所有系統輸入法已驗證。
 
-已新增商品詳情：左圖集、右標題／價格／選項、下方介紹／規格／說明，屬approximate資訊結構。參考頁以web可讀內容確認品號、圖集與顏色／尺寸／數量等區塊；沒有擷取真站圖片、API或宣稱pixel parity。商品名稱及價格維持本機mock。
+frontend-design-premium的Python audit因當時沒有可用Python runtime未執行，designmd CLI也未安裝；沒有為此增加未核准套件，未宣稱兩者通過。本次不重新檢查或修復該工具環境。
 
-商品卡與詳情頁的原missing狀態已由本次擴充實現；會員、持久化cart與交易仍不提供。新增桌面／手機詳情截圖與本機選購流程smoke，完整錯誤重試與快速切換仍由整合測試驗證。
-
-## 商品tabs與底部探索補充
-
-依人類本次明確要求，介紹／規格／選購說明已改為本地tab面板，不再用hash錨點；底部有可點商品推薦與真實瀏覽紀錄，仍使用自編mock商品。Chrome驗證URL完全不變、鍵盤focus、跨商品與重新整理還原／清除；並保存桌面與手機截圖。這不是對真站推薦演算法或跨裝置歷史的複製。
+原始計畫時間盒是規劃目標，不是實際耗時證明；提交與 [協作紀錄](ai-collaboration.md) 才是開發歷程來源。

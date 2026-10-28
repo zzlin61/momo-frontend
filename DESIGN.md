@@ -46,69 +46,60 @@ components:
 
 ## Overview
 
-繁體中文台灣電商展示，來源為 IMPLEMENTATION_PLAN.md 與使用者「切版完成後討論」指示。首頁為品牌／探索混合，搜尋頁為商品探索產品介面。沒有交易或會員流程，無日本市場需求。
+台灣繁體中文電商展示，主題為日常運動選物。首頁混合品牌探索，搜尋與商品頁以任務清楚為主。維持momo熟悉的粉紅搜尋列及密集商品資訊，自製淡紫運動主視覺是主要表現；不加入交易或官方優惠承諾。
 
-Agent 提案：以 momo 粉紅搜尋列與密集分類導覽保留電商辨識度，主視覺採淡紫運動選物提案、放大自製鞋圖。此為待人類檢視的設計決策，不宣稱人類已核准個別顏色或與真站一致。
+目前有首頁、搜尋、商品詳情與頁內tabs／推薦／歷史。圖像皆為原創SVG，英文小標是視覺輔助，主要操作／訊息／無障礙名稱使用中文；沒有日本市場或日文locale需求。
 
-取捨：精確複製真站需獲授權的資產與逐畫面比較；本批採原創視覺加熟悉資訊架構，不做獨立品牌重設計，也不做黑色 SaaS 或大面積空白企業站。
-
-Runtime ownership: src/app/global.css 為 canonical token source；此 frontmatter 鏡映其語意值，primary → --brand、primary-dark → --brand-dark、primary-soft → --brand-soft、border → --line、background → --page，其餘顏色對應同名 CSS 變數。元件使用變數，不複製主題值。SVG illustration palettes 為原創圖像顏色，不是 UI tokens。
+Runtime token owner為src/app/global.css，frontmatter鏡映其值：primary→--brand、primary-dark→--brand-dark、primary-soft→--brand-soft、border→--line、background→--page，其餘顏色同名。UI使用變數；SVG illustration palette屬圖像配色，不是另一套主題。修改系統tokens需同步文件與runtime。
 
 ## Colors
 
-白色 header/card、淺灰頁面、粉紅搜尋／主要按鈕／價格；紫色只用於首頁主視覺。藍與杏色為右側次要促銷。無深色模式；forced-colors 使用系統捲軸。粉紅不單獨代表錯誤，錯誤需明確文案及 alert。
+白色header/card、淺灰頁面、粉紅搜尋／主動作／價格。紫色主要用於首頁與商品介紹；藍及杏色用於次要活動。錯誤需文字與語意，不單靠顏色。沒有dark theme；forced-colors保留系統可操作捲軸及selected-tab提示。
+
+全域scrollbar tokens包含thumb／hover／active與track，使用標準屬性及WebKit fallback；局部導覽可水平捲動，但不讓整頁溢出。
 
 ## Typography
 
-繁體中文優先微軟正黑體、蘋方，不依賴外部字型。標題 24–39px、商品 15px、資料價格 27px Arial。英文小標僅作輔助，主要操作與無障礙名稱均用中文。商品資訊完整保留，不以截斷隱藏關鍵值。
+正文優先Microsoft JhengHei／PingFang TC／system-ui；價格使用Arial，沒有外部字型。常用標題24–39px、商品名稱15px、卡片價格27px；詳情價格較大。以實際CSS為準，不隱藏商品重要資訊；長名稱可換行。formatPrice只產生數字部分，UI負責$與可讀價格文案，價格單位為新台幣元。
 
 ## Layout
 
-頁寬上限 1200px；桌面左右 24px，700px 以下 14px。首頁桌面 196px 分類側欄／主視覺／228px 促銷；1100px 收起促銷，750px 收起側欄。搜尋側欄於700px收起，主要搜尋仍可使用。商品 grid 4/3/2 欄，650px 以下兩欄。全頁自然捲動，導覽列可獨立水平捲動，不讓整頁橫向溢出。SVG 固定 viewBox、商品圖片區保留比例。小型固定資料集一次渲染，無假分頁。
+頁寬上限1200px，桌面左右24px、700px以下14px。首頁分類／主視覺／側促銷於窄版逐步收起；導覽在1000px以下可局部捲動。一般商品網格4/3/2欄；Discovery另採4欄、900px以下2欄。
+
+商品詳情桌面左右圖集／選購，750px以下單欄。圖片固定viewBox及比例。詳情之後依序為資訊tabs、推薦、瀏覽紀錄；自然document捲動，沒有fixed-height app shell或假分頁。
 
 ## Elevation & Depth
 
-卡片以細邊框分隔，hover 僅微量陰影；無高階浮層，無 modal/toast。主視覺鞋圖可使用表現性投影。
+細邊框及表面色建立層級；卡片hover只有輕量陰影，主視覺鞋圖可表現性投影。沒有modal、toast或高階overlay；持續錯誤與選購確認放在擁有該流程的區域。
 
 ## Shapes
 
-容器 7px、動作 4px；相關搜尋詞為 pill，radio 以圓形表示。搜尋欄高46px。所有互動提供 focus-visible 與 hover；商品卡為article內的完整Link，保留可讀商品資訊與鍵盤focus，連至本機詳情頁。
+一般容器7px、動作4px；相關搜尋pill、配色圓點與radio有各自用途。搜尋列高46px。商品card是article中的完整Link，提供focus-visible；不做可點div。hover不替代鍵盤或觸控操作，disabled按鈕保有明確外觀。
 
 ## Components
 
-Canonical ownership: SearchForm → components/search；ProductArtwork/ProductCard/ProductResults → components/product；useProducts → libs/store/products；SiteHeader/PageShell → components/layout；App → app composition。沒有 screen-local search 或結果元件副本。
+| 能力 | Canonical owner | 主要驗證 |
+|---|---|---|
+| Header／容器 | components/layout/SiteHeader、PageShell | App及browser smoke |
+| 搜尋 | components/search/SearchForm | src/app/App.test.tsx |
+| 商品card／圖像／清單狀態 | components/product/ProductCard、Artwork、Results | App及browser smoke |
+| 圖集 | components/product/ProductGallery | src/app/ProductPage.test.tsx |
+| 選購表單 | components/product/ProductPurchase | ProductPage及Business rules tests |
+| 資訊tabs | components/product/ProductInfoTabs | ProductInfoTabs、ProductExperience tests |
+| 推薦／歷史呈現 | components/product/ProductDiscovery | ProductDiscovery、ProductExperience tests |
+| 捲軸／tokens | app/global.css | browser computed style |
 
-| Capability | Canonical owner | Source of truth | Allowed variants | Verification |
-|---|---|---|---|---|
-| Form | components/search/SearchForm.tsx | AGENTS.md URL and UX contract | explicit submit / clear | src/app/App.test.tsx |
-| Product selection | components/product/ProductPurchase.tsx | AGENTS.md product detail contract | native radio / quantity stepper | src/app/ProductPage.test.tsx |
-| Scrollbar | app/global.css | DESIGN.md | system forced-colors | browser smoke |
+Business hooks與規則歸libs/store/products；資料與storage adapters歸libs/apiservices/products。詳細所有權見 [架構](docs/architecture.md)，不在UI重新實作同一組資料規則。
 
-搜尋提交 trim 後導航，空白與 IME composition 不導航；clear 立即清空、返回首頁並保留輸入焦點。pathname 是 keyword 唯一來源，表單同步回填。排序與品牌存在 URL query，legacy query 不影響搜尋。排序採按鈕，不需 Select/Listbox。無其他未實作的可點擊假功能。
+搜尋草稿／IME／focus留UI，URL擁有已提交查詢。商品選購使用fieldset/legend及原生radio，隱藏input仍能focus，由label focus-within呈現輪廓。換色清尺寸，選項／數量改變清除舊確認；submit驗證失敗有alert及焦點，成功有具名status。無select/listbox套件或交易按鈕。
 
-loading 為固定區域 app spinner；error 提供重試；empty 提供 asics 建議與返回首頁。useProducts effect cleanup 阻止舊回應覆寫；清除離開搜尋頁時失效。首頁及搜尋頁共用相同卡片、狀態元件與 repository。NTD 使用 zh-TW 數字格式，不顯示假折扣、庫存或配送承諾。
+Tabs有tablist/tab/tabpanel與aria關聯；單一Tab停駐點，左右鍵／Home／End自動啟用並移動焦點。只有目前panel可操作，換商品回介紹；切換不改URL。推薦最多4件、歷史不預填假紀錄；兩者沿用卡片，清除歷史即時更新。
 
-主視覺輕微 hover 不超過250ms；reduced-motion 取消 transition 與旋轉。SVG 圖為裝飾，article 名稱與商品資訊提供可讀內容。
+載入為app-owned spinner或區域status，錯誤有重試，無商品與請求失敗分開。資料狀態由Business管理，UI不解析response。動作hover及圖集transition不超過250ms；prefers-reduced-motion停用非必要transition／animation。
 
 ## Do's and Don'ts
 
-- 維持首頁與搜尋頁同一個 shell、卡片、搜尋與狀態文案。
-- 使用本機 SVG，不下載商標或真實商品資產；文字 momo 僅為作業展示辨識。
-- 不新增假 cart、登入、輪播或無作用按鈕。
-- 不宣稱像素一致、真實優惠或官方交易能力。
-
-
-## 商品詳情擴充
-
-/product/:productId由人類本次授權新增，使用與首頁／搜尋相同shell。桌面上半部左右圖集／選購資訊，750px以下單欄；商品圖保留比例。下方商品介紹、規格、說明使用頁內tabs；只切換面板，不變更URL。再下方為商品推薦與瀏覽紀錄；沒有無作用交易按鈕。
-
-ProductGallery與ProductPurchase歸components/product，ProductPage只連接路由、狀態與頁面組合。原生fieldset/legend/radio保有Tab及方向鍵操作；隱藏radio仍可focus，label以focus-within呈現輪廓。錯誤有alert與欄位說明，確認有具名status；選項或數量改變時清除過期確認。未使用select、modal或新的互動套件。
-
-顏色／尺寸／數量為UI草稿，Business驗證是否可選與數量範圍並計算確認總價；不建立cart、付款或訂單。圖集僅自製SVG的示意視角，不是官方產品照片。參考頁只用於資訊結構，不宣稱逐像素一致或真實報價。
-
-
-## 頁內tabs與商品探索延伸
-
-ProductInfoTabs擁有純UI狀態，使用tablist/tab/tabpanel與roving tabindex；滑鼠及左右鍵/Home/End切換不更新Router或hash。預設介紹，換商品重設。隱藏面板仍有正確aria關聯，只有目前面板可被操作。沿用現有粉紅selected與focus-visible語言。
-
-商品推薦與瀏覽紀錄沿用ProductCard及2至4欄網格。推薦排除當前並優先同品牌，最多4件；歷史只顯示曾成功查看的其他商品，不預填假紀錄。localStorage僅存最多8筆canonical IDs，頁面提供清除；儲存受限仍能使用詳情頁，不向外傳送。UI以明確heading/空狀態/載入與重試呈現，不暗示個人化模型或真實銷量。
+- 保持三頁同一shell、商品卡、價格與狀態語言，使用既有tokens及owner。
+- 明確說明示範商品、價格及選購；本機紀錄只存商品ID，可清除。
+- 不下載官方圖像、捏造折扣／庫存／交易能力或加入無作用按鈕。
+- 不宣稱pixel parity、完整WCAG驗證或未執行的工具通過；已知缺口見 [comparison](docs/comparison.md)。

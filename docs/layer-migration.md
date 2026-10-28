@@ -1,5 +1,8 @@
 # 三層目錄歸屬與搬遷計畫
 
+> **歷史對照，已完成於5759aeb。** 下方23個測試及當時範圍是搬遷批次結果，不是現行測試數。後續商品頁、tabs與Discovery已擴充；現行所有權見[architecture](architecture.md)，最新驗證見[verification](verification.md)。
+
+
 2026-10-28，人類授權先更新歸屬對照，確認無衝突後執行搬遷；不安裝狀態管理套件、不改畫面或mock資料。本文件為原始IMPLEMENTATION_PLAN的後續補充。
 
 | 舊位置 | 新位置 | 責任 |

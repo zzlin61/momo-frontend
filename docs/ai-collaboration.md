@@ -1,5 +1,24 @@
 # AI 協作紀錄
 
+> **按時間保留的歷史紀錄。** 各批的舊路徑、尚未完成／未獲提交授權及當時測試數，只描述該時點；不是現行規範。現行文件入口見[文件索引](README.md)，最新功能基準為2b34f15，主專案51個測試。此整理不改寫下方既有事件。
+
+## 主要提交索引
+
+| 提交 | 內容 |
+|---|---|
+| bdc947b | 骨架、商品mock與初版文件 |
+| 3da8385 | 首頁／搜尋切版與互動 |
+| 92e863e | 未啟用的libs分層文件範例 |
+| 5759aeb | 三層目錄搬遷 |
+| 62f611c | 商品詳情、本機選購確認 |
+| df12543 | 平行worktree準備與分工 |
+| 44d62d4 | tabs agent成果整合 |
+| f11c7f7 | Discovery agent成果整合 |
+| 2b34f15 | tabs／推薦／歷史接線與整體驗證 |
+
+後續文件整理提交見git log；以下保留原始協作記事。
+
+
 ## 2026-10-28 — 初始化批次
 
 - 人類目標：依 Downloads 的 AGENTS.md、IMPLEMENTATION_PLAN.md，在桌面初始化 momo-frontend 基本架構與 Git；本機工具無回應後要求重試。
@@ -115,3 +134,16 @@
 - 第三位唯讀reviewer檢查整合後ARIA、URL、race、storage、canonical key及層級，未發現Critical/Important或有價值Minor；其審查未重跑tests，驗證結果來自主代理。
 - README、AGENTS、DESIGN、architecture、tradeoffs、comparison與libs規範同步。歷史只存本機商品ID、不存個資／價格／時間戳、不傳外部；storage受限不保證跨刷新保存，但不能使詳情失敗。
 - 兩個worktree及feature branches保留供人類檢視；主工作樹將提交整合紀錄。未做push/merge、未重寫history、未新增套件。
+
+### 2026-10-28 16:16 +08:00 — 最後文件整理
+
+- 人類要求：依目前內容與架構，檢查更新根目錄及docs內全部Markdown；本批沒有修改功能程式或src/libs文件。
+- 使用writing-for-agents整理入口及現行／歷史文件分工。檢視4份根目錄與原有9份docs文件，新增docs/README.md索引與docs/verification.md；合計15份。
+- 重整README、AGENTS、DESIGN、architecture、tradeoffs、comparison為現行三層與三路由／tabs／推薦／本機history。清除tradeoffs中當作現況的骨架／四筆資料／尚未commit等舊敘述；事件本身仍保留於本紀錄。
+- IMPLEMENTATION_PLAN在原文前加現況／授權差異，原始body保留。layer-migration、兩份已完成計畫及兩份agent log加歷史banner與現行入口，不將其23/37/41/45等當時測試數追溯改成51。
+- 自動查核Markdown本機連結與錨點、成對code fence；驗證原始計畫及歷史body仍完整存在、DESIGN frontmatter tokens未變、browser-smoke JSON與11張圖片證據未重寫。最終連結數見下方工具檢查紀錄。
+- CLI重跑：check:layers exit0（30runtime/94imports）、lint exit0。第一輪test有50/51，商品直接URL案例document.title尚為載入文字，並有相同demo-asics-01的React key警告；不是文件程式變更。
+- 調查確認ProductPage三個同層區塊key均使用product.id；title案例在找到h1後立即斷言document.title，可能有effect時序風險，未宣稱已判定完整根因。單檔8/8、之後全套10files/51tests通過；既有警告與偶發測試已記comparison/verification，未混入修正。
+- build exit0（75modules），產物仍index-zlz5QMHk.css與index-C6sq4BEB.js。未重跑Chrome、未更新截圖／browser-smoke.json；沿用2026-10-28T08:01:37.247Z的已保存證據並清楚標示日期。
+- 所有變更限制Markdown；沒有新套件、runtime、測試或設定檔修改。既有Python/designmd稽核環境限制未處理，不宣稱通過。
+- 本批依既有agent commit授權提交，訊息docs: reconcile final project documentation；提交hash見git log。下一步先處理已記錄的React key／title測試時序問題，再進一步修正搜尋狀態等既有缺口。

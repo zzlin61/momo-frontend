@@ -1,4 +1,7 @@
-﻿# Product tabs agent log
+# Product tabs agent log
+
+> **隔離worktree歷史紀錄。** 原提交e40cf4c，整合提交44d62d4；ProductPage接線已於2b34f15完成。下方41個測試只代表該agent當時的worktree，不是現行主專案數量。見[整體驗證](verification.md)與[協作歷程](ai-collaboration.md)。
+
 
 2026-10-28, product-tabs worktree / feat/product-info-tabs.
 

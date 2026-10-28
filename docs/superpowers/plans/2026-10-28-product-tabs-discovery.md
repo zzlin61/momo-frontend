@@ -1,5 +1,8 @@
 # Product tabs, recommendations and recent history plan
 
+> **已完成的歷史計畫。** 準備提交df12543、tabs整合44d62d4、Discovery整合f11c7f7、最終接線2b34f15。兩個worktree保留供檢視；現行行為及驗證見[architecture](../../architecture.md)、[verification](../../verification.md)。下方baseline與agent責任是當時分工。
+
+
 2026-10-28，人類要求頁內tabs不更改URL，並新增底部商品推薦與瀏覽紀錄；明確要求subagents各開worktree並行。
 
 ## Responsibilities and integration

@@ -1,47 +1,69 @@
-# 架構
+# 現行架構
 
-單一Vite SPA，依三層責任組織，沒有monorepo、HTTP端點或狀態管理套件。原始IMPLEMENTATION_PLAN保留為baseline；人類授權的歸屬變更與對照見 [layer-migration.md](layer-migration.md)，詳細規範見 [src/libs](../src/libs/README.md)。
+單一 Vite SPA，依三層責任組織。人類授權的搬遷已完成；[舊新歸屬對照](layer-migration.md) 是歷史資料，原始 [IMPLEMENTATION_PLAN](../IMPLEMENTATION_PLAN.md) 的 feature folders 不是目前目錄。
 
-## 現行責任
+## 責任與依賴
 
-- app：路由、預設repository建立一次、測試注入與應用外框組合。
-- pages：頁面組合、Router keyword/query連接；不持有fixtures或商品排序implementation。
-- components/layout：SiteHeader與PageShell；components/search：SearchForm；components/product：商品卡、SVG與結果呈現。它們是UI，不擁有資料來源implementation。
-- libs/apiservices/products：ProductRepository interface、mockProductRepository與測試；types/ProductRecord定義正規化資料。
-- libs/store/products：productModel重用ProductRecord與資料來源契約、宣告ProductState；useProducts協調請求；productRules提供品牌／排序／數量投影。此處是Business，不代表已導入Zustand。
-- libs/utils/formatPrice：UI數字格式化，維持原來NumberFormat('zh-TW')輸出；美元符號及無障礙文案仍由ProductCard負責。
-- data/products：原有12筆fixtures與價格不變，僅mock adapter直接讀取；type-import資料來源型別不形成向上依賴。
+| 位置 | 內容 |
+|---|---|
+| app | 三條路由、預設 repository 建立與注入、全域樣式／tokens |
+| pages | 首頁、搜尋、商品頁組合；Router 路徑／query 與返回來源連接 |
+| components/layout、search、product | 導覽、表單、商品卡／圖像、圖集、選購、tabs、推薦及歷史呈現 |
+| libs/apiservices/products | ProductRepository、mockProductRepository、recentProductStorage、正規化 record types |
+| libs/store/products | productModel、商品投影／選購／推薦規則、useProducts／useProductDetail／useProductDiscovery |
+| libs/utils | formatPrice 等 UI 純函式 |
+| data | 12 筆商品與由它們產生的本機詳情 fixtures |
 
-依賴：UI → Business → 資料來源interface/types；UI → utils；app composition → 具體adapter → fixtures。apiservices不依賴Business或UI，Business不依賴UI。沒有entities/features/shared的舊runtime轉出口或雙重implementation。
+依賴為 UI → Business → 資料來源 interface/types；UI → utils；app composition → 具體 mock adapter → fixtures。只有資料 adapter 直接讀 fixtures；資料來源不匯入 Business／UI，Business 不匯入 UI。fixture 的 type-import 不形成反向 runtime 依賴。
 
-## 資料與請求
+ProductRecord／ProductDetailRecord 由資料來源定義；Business Product／ProductDetail 重用其形狀，沒有為層數增加無差異資料拷貝。ProductRepository 透過 Business 型別入口提供 UI 使用，具體 adapter 僅由 app 組合。
 
-App的預設mock延遲180ms，透過ProductRepository props注入兩頁；測試可注入受控adapter。useProducts保留revision retry、keyword關聯結果、effect cleanup與過期回應防護。首頁featured與搜尋各有hook instance，不共用一個全域products槽。
+`libs/store` 目前使用 React hook，不代表已採用 Zustand；純規則不依賴 React。`libs/hooks` 尚未建立。7 份 example.ts.md 仍是文件，並非正式 mapper 或已啟用 store。
 
-mock adapter保留Promise、固定錯誤／延遲、名稱／品牌／tags匹配、空白查詢空結果與回傳複製。沒有加入假設的response DTO或HTTP implementation。ProductRecord與Business Product目前形狀一致，透過type alias重用，不作無差異的資料拷貝。
+## 資料來源
 
-## URL與UI
+ProductRepository 有三個 Promise 操作：
 
-Router解碼/search/:keyword，keyword是canonical state。sort/brand存於query，legacy query不影響matching；草稿與IME/focus由SearchForm處理。clear回首頁使舊搜尋cleanup，表單不因route key重建。
+- listFeatured：依 fixture 順序回傳商品。
+- search：trim 後以名稱／品牌／tags 作大小寫不敏感的子字串匹配；空白回傳空陣列，無 fuzzy。
+- getById：接受 stable ID 或 productCode，成功回傳詳情，未找到回傳 null。
 
-SearchPage將state、brand、sort交給productRules投影；不重複保存count或篩選清單。投影保留原排序及品牌語意，不在本次目錄重構改變無效sort或error標題文案等既有行為。範例中的正規化策略尚未啟用。
+預設 app adapter 延遲180ms；factory 可指定固定 delay/error。清單複製商品及 tags，詳情以 structuredClone 隔離巢狀資料。沒有 HTTP endpoint、外部商品圖片或真實 response；教學 DTO 文件不介入現有資料流。
 
-## 驗證與設計
+第一筆原 ID demo-asics-01 另外有 productCode 15745582。兩者查到同一個 canonical 商品，不代表與官方商品名稱／價格一致。
 
-DESIGN.md記錄設計與canonical UI owner；app/global.css擁有runtime tokens。CSS、SVG與markup保持，沒有UI重設計。原有repository與App行為測試繼續驗證資料與搜尋契約，scripts/browser-smoke.mjs驗證實際瀏覽器流程及RWD。
+## 狀態所有權
 
-7份example.ts.md仍是教學文件，與正式ts檔有清楚區分；狀態管理及真實response契約需要未來另外決定。
+| 資料 | Owner |
+|---|---|
+| 搜尋 keyword／sort／brand、商品路徑 ID | Router |
+| 搜尋草稿、IME、focus、選項、數量、tab | UI 本地狀態 |
+| 載入／失敗／重試與失效請求判斷 | Business hooks |
+| 品牌選項、清單排序、數量、推薦與選購總額 | Business 純規則 |
+| 最近商品 ID 的去重／順序／八筆上限 | Business |
+| localStorage 存取與損毀／禁用容錯 | recentProductStorage adapter |
+| 金額顯示字串 | UI formatter |
 
-## 商品詳情（本次授權擴充）
+useProducts 保留 keyword/revision 對應結果與 cleanup；useProductDetail 另外以 repository/productId/revision 識別結果。useProductDiscovery 對同 repository/key 共享尚未完成的請求，完成後即移除，不是永久快取。cleanup 與結果識別阻止舊回應，清除歷史亦使舊結果失效。
 
-ProductRepository新增getById，接受stable id或productCode，回傳ProductDetailRecord或null。data/productDetails從原12筆自編商品產生描述、規格、兩色及可選尺寸，既有名稱／價格／ID不改；第一筆增加15745582作為本機品號，並不代表真站資料。
+## 路由與呈現
 
-mock adapter支援與其他操作相同的固定delay/error，詳情以structuredClone隔離巢狀資料。Business新增useProductDetail，以repository/id/revision關聯結果並用effect cleanup防止舊回應；productDetailRules驗證選項、數量並計算總價。未安裝狀態管理套件。
+搜尋明確提交才執行，沒有輸入即查，因此未加 debounce。空白與 IME 組字不導航，clear 返回首頁且保留輸入焦點。URL sort/brand 由 SearchPage 傳給 productRules，legacy query 不影響 matching。
 
-ProductPage組合圖集、ProductPurchase、描述及規格。商品卡Link在Router state保留內部來源路徑；返回只接受/或/search/開頭，否則回品牌搜尋。商品頁legacy query不參與mock查找。頁面依載入／錯誤／不存在／成功設定title；顏色切換清空尺寸，商品id切換重設整個選購草稿，所有選購確認都是本頁示範。
+商品卡以 Link 與 Router state 保留來源；返回僅接受 / 或 /search/ 開頭的內部路徑，無可用 state 時回品牌搜尋。詳情 legacy query 忽略。換商品以 canonical product.id 重設購買草稿、tabs 與 discovery。
 
-## 頁內tabs、推薦與本機瀏覽紀錄
+ProductInfoTabs 使用 tablist/tab/tabpanel、roving tabindex、方向鍵／Home／End，只更新本地 state，不改 pathname/query/hash。ProductPurchase 的原生 radio／fieldset 保有鍵盤語意；Business 驗證尺寸可選性及整數數量1–5，確認僅本頁顯示，不建立訂單。
 
-本次人類明確要求替換錨點：商品介紹／規格／選購說明切為ProductInfoTabs，UI本地狀態不更新pathname、query或hash。推薦／歷史由獨立ProductDiscovery接在tabs之後，頁面維持組合責任。
+## 推薦與瀏覽紀錄
 
-商品推薦從同一repository取得mock候選，排除當前、同品牌優先且保持穩定順序。Business負責規則、非同步與歷史去重；瀏覽器儲存adapter隔離localStorage存取，UI不讀fixtures或直接讀寫storage。成功詳情才寫入canonical ID，最多8筆、最近在前；顯示排除當前，清除立即更新。這是使用者要求的本機紀錄，不傳至外部。
+推薦由 listFeatured 提供候選，排除當前及重複 ID，同品牌優先、其餘保持來源順序，最多4件。推薦 loading/error/retry 獨立於商品詳情。
+
+成功詳情掛載 discovery 後，canonical ID 以最近在前、去重、最多8筆寫入 `momo.recent-products.v1`。儲存只含 ID，不含價格、時間戳或個資；顯示排除當前，歷史明細 null／單筆失敗會忽略。清除立即更新畫面。
+
+storage adapter 對 JSON 損毀或瀏覽器禁用回傳空值／忽略寫入，讓商品頁繼續使用；沒有保證故障後的跨頁／刷新保存，也沒有跨分頁即時同步或跨裝置同步。
+
+## 驗證與文件
+
+[check:layers](../scripts/check-layers.mjs) 檢查 runtime 靜態 import/export，排除測試；目前不解析 dynamic import 或未來 path alias。Vitest 僅掃 src，避免 nested worktrees 重複計數。
+
+[驗證說明](verification.md) 區分當前 CLI 檢查與上次瀏覽器證據；[已知限制](comparison.md) 記錄尚未修正的既有行為，不能把教學範例的正規化策略宣稱已在 runtime 啟用。
