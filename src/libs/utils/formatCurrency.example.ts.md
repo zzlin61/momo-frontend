@@ -1,6 +1,6 @@
 # formatCurrency.ts — UI formatter 範例（未啟用）
 
-此範例只格式化已驗證的「新台幣元」金額，沒有單位換算、取價或業務折扣政策。UI 目前仍用既有 ProductCard 的 formatter。
+此範例只格式化已驗證的「新台幣元」金額，沒有單位換算、取價或業務折扣政策。UI目前使用libs/utils/formatPrice.ts，保持原顯示；本例尚未啟用。
 
 ```ts
 const twdFormatter = new Intl.NumberFormat('zh-TW', {

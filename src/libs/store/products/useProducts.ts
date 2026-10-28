@@ -1,11 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { Product } from './Product';
-import type { ProductRepository } from './ProductRepository';
-
-export type ProductState =
-  | { status: 'loading' }
-  | { status: 'error' }
-  | { status: 'success'; products: Product[] };
+import type { ProductRepository, ProductState } from './productModel';
 
 export function useProducts(repository: ProductRepository, keyword?: string) {
   const [revision, setRevision] = useState(0);

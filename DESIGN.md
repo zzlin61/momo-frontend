@@ -76,11 +76,11 @@ Runtime ownership: src/app/global.css 為 canonical token source；此 frontmatt
 
 ## Components
 
-Canonical ownership: SearchForm → features/search；ProductArtwork/ProductCard/ProductResults/useProducts → entities/product；SiteHeader → app composition；PageShell → shared/layout。沒有 screen-local search 或結果元件副本。
+Canonical ownership: SearchForm → components/search；ProductArtwork/ProductCard/ProductResults → components/product；useProducts → libs/store/products；SiteHeader/PageShell → components/layout；App → app composition。沒有 screen-local search 或結果元件副本。
 
 | Capability | Canonical owner | Source of truth | Allowed variants | Verification |
 |---|---|---|---|---|
-| Form | features/search/SearchForm.tsx | AGENTS.md URL and UX contract | explicit submit / clear | src/app/App.test.tsx |
+| Form | components/search/SearchForm.tsx | AGENTS.md URL and UX contract | explicit submit / clear | src/app/App.test.tsx |
 | Scrollbar | app/global.css | DESIGN.md | system forced-colors | browser smoke |
 
 搜尋提交 trim 後導航，空白與 IME composition 不導航；clear 立即清空、返回首頁並保留輸入焦點。pathname 是 keyword 唯一來源，表單同步回填。排序與品牌存在 URL query，legacy query 不影響搜尋。排序採按鈕，不需 Select/Listbox。無其他未實作的可點擊假功能。

@@ -1,5 +1,5 @@
 import { Link, useMatch } from 'react-router';
-import { SearchForm } from '../features/search/SearchForm';
+import { SearchForm } from '../search/SearchForm';
 import styles from './SiteHeader.module.css';
 
 const links = [['運動戶外', '運動'], ['流行鞋款', '鞋'], ['ASICS', 'asics'], ['New Balance', 'New Balance'], ['日常穿搭', '日常'], ['精選配件', '配件']];

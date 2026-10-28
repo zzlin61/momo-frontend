@@ -16,4 +16,4 @@ export interface ProductQuery {
 }
 ```
 
-此 alias 僅是文件中示範的選擇，不取代目前 `src/entities/product/Product.ts`。Business 可依賴資料來源的正規化型別；資料來源不能反過來匯入 Business。
+此 alias 僅是文件中示範的選擇，不取代目前 `src/libs/store/products/productModel.ts`。Business 可依賴資料來源的正規化型別；資料來源不能反過來匯入 Business。

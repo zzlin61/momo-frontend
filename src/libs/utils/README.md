@@ -1,6 +1,6 @@
 # utils：UI 通用純函式
 
-狀態：文件範例；既有 UI 的格式化位置未搬移。
+狀態：formatPrice.ts已接入ProductCard並保留原本數字格式。formatCurrency.example.ts.md仍是未啟用的教學範例，不取代現行金額文案。
 
 函式應不依賴 React、DOM、store、資料來源或特定商品政策，並有清楚的輸入／輸出。例：[formatCurrency](formatCurrency.example.ts.md)。
 

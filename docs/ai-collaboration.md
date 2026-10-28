@@ -70,3 +70,18 @@
 - 應用驗證：沿用既有本機pnpm入口執行lint exit0、test 23/23 passed、build exit0（57 modules）。產物仍為index-BFsGbPQ1.css及index-CIRc7F_p.js，與切版批次相同。範例只通過型別檢查，不宣稱已執行其runtime或新增測試覆蓋。
 - 此批不重跑瀏覽器截圖，因實際執行程式未改；最後以Git確認變更僅Markdown。已授權agent commits，提交訊息為 docs: define libs layering and inactive examples，hash見本提交git log。
 - 下一步：人類檢視規範後再決定是否遷移某一商品探索流程及使用哪個狀態管理implementation。
+
+### 2026-10-28 15:26 +08:00 — 歸屬對照與三層搬遷
+
+- 人類指示（重複訊息視為同一次授權）：先更新規範歸屬對照，無問題即可搬遷。延續不安裝狀態管理套件、保留UI與mock語意。
+- 先建立docs/layer-migration.md，確認資料來源不可反向依賴Business，才驗證來源／目標路徑均在repo且不覆寫既有檔，搬遷16個檔案。
+- UI集中components/layout、product、search；資料來源interface/mock/tests及ProductRecord歸apiservices；Business productModel/useProducts/productRules歸store；原價格數字formatter歸utils/formatPrice。
+- ProductRecord保留原欄位，Business以型別alias重用；SearchPage投影抽離但保持原品牌／排序／數量語意。fixtures值、CSS、SVG與互動不變。
+- 舊entities/features/shared僅在確認為空後逐層移除，未遞迴刪除內容、未留轉出口。7份example.ts.md仍為未啟用教學文件，正式程式與範例有明確區分。
+- 同步AGENTS、DESIGN、README、architecture、libs各層規範與tradeoffs；原始IMPLEMENTATION_PLAN及lockfile未變。
+- 中途檢查抓到批次字串替換過廣造成的import及ProductRecord語法錯誤；根因為PowerShell單一pair陣列展開及前綴匹配，改從HEAD原文重新套用精確替換後全部檢查通過。沒有將中途失敗冒稱成功。
+- 獨立唯讀review確認型別、race/retry、投影、格式化、CSS/SVG搬遷一致，未發現實質問題。
+- 新增check:layers腳本，使用既有TypeScript parser檢查18個runtime檔案、53個static imports/exports。暫時插入一個反向依賴probe確認exit1，finally移除後檢查exit0；未新增套件或留下probe。
+- 最終驗證：pnpm入口依次執行check:layers exit0、lint exit0、test 23/23 passed、build exit0（59 modules）；CSS仍index-BFsGbPQ1.css。Chrome browser-smoke exit0，無runtime例外或外部HTTP，原桌面／手機流程與各寬度通過，截圖報告更新。
+- 保留既有未知sort與error標題文案的行為；本次不混入功能修正。依賴檢查目前限static import/export，未聲稱覆蓋dynamic import或未來alias。
+- 已授權提交，訊息refactor: migrate storefront into three-layer structure；hash見本提交git log。下一步由人類檢視新歸屬，再決定狀態管理或獨立功能改善。

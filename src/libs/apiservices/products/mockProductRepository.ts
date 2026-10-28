@@ -1,5 +1,5 @@
-import { productFixtures } from '../../data/products';
-import type { Product } from './Product';
+import { productFixtures } from '../../../data/products';
+import type { ProductRecord } from './types/ProductRecord';
 import type { ProductRepository } from './ProductRepository';
 
 interface MockProductRepositoryOptions {
@@ -10,7 +10,7 @@ interface MockProductRepositoryOptions {
 export function createMockProductRepository(
   { delayMs = 0, error }: MockProductRepositoryOptions = {},
 ): ProductRepository {
-  async function respond(products: readonly Product[]): Promise<Product[]> {
+  async function respond(products: readonly ProductRecord[]): Promise<ProductRecord[]> {
     if (delayMs > 0) {
       await new Promise<void>(resolve => setTimeout(resolve, delayMs));
     }

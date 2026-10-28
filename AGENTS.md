@@ -33,12 +33,13 @@ After each batch:
 ## Dependency boundaries
 
 - `app/` composes routes and providers.
-- `pages/` composes feature/entity UI for each route.
-- `features/search/` owns search form, search behavior and search-specific UI.
-- `entities/product/` owns `Product`, `ProductRepository`, mock implementation, and reusable product presentation.
-- `data/` owns fixtures; only repository/data adapter should access fixtures directly.
-- `shared/` owns truly generic primitives/layout; it must not import from `features`, `entities`, or `pages`.
-- Do not introduce cross-feature imports or barrel exports that hide circular dependencies.
+- `pages/` composes UI and connects Router state to Business.
+- `components/` owns UI layout, product presentation and search form interaction.
+- `libs/apiservices/` owns data-source interfaces, adapters and normalized transport types; it must not import Business or UI.
+- `libs/store/` owns Business models, pure rules and async state coordination; currently React hooks, no state-management package.
+- `libs/utils/` owns UI pure helpers without data-source or Business dependencies.
+- `data/` owns fixtures; only the data adapter reads them directly.
+- Read `src/libs/README.md` before changing layer ownership. Do not retain parallel entities/features/shared implementations or add barrels that hide circular dependencies.
 
 ## URL and UX contract
 
@@ -84,6 +85,6 @@ Ask for approval before adding a major framework/dependency, changing the scope,
 
 Provide: (1) implemented scope, (2) changed files, (3) actual commands/checks and outcomes, (4) key tradeoffs, (5) known limitations, (6) commit hashes if present, (7) next recommended step.
 
-## Planned libs layering (documentation only)
+## libs layering and inactive examples
 
-When adding or reviewing `src/libs` conventions or examples, read `src/libs/README.md` first. These folders currently contain documentation examples only; the existing UI/mock execution path and dependencies remain in place until a separately authorized migration.
+When adding or reviewing `src/libs` conventions or examples, read `src/libs/README.md` first. Runtime modules have migrated to these folders under the human-approved mapping in `docs/layer-migration.md`. Files ending `.example.ts.md` remain documentation only. Keep the existing mock behavior and package dependencies unless the human authorizes a further change.

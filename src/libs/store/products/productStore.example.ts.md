@@ -38,4 +38,4 @@ export interface ProductSearchActions {
 
 dispose 是持有未完成請求之 module 的正式生命週期能力，與測試專用 reset 不同。若選用 Zustand，可用 actions 與 selector 實現，不要求 Redux 式 dispatch；此處暫不決定套件或訂閱細節。
 
-原本 useProducts 與 UI 測試並未搬移；此文件亦不代表現有流程已實作上述 store 契約。
+useProducts已搬至libs/store/products，UI測試仍在app；此文件亦不代表現有流程已實作上述 store 契約。

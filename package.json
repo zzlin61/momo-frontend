@@ -4,14 +4,17 @@
   "version": "0.0.0",
   "type": "module",
   "packageManager": "pnpm@10.20.0",
-  "engines": { "node": ">=22.12.0" },
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "lint": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "check:layers": "node scripts/check-layers.mjs"
   },
   "dependencies": {
     "react": "^19.2.0",

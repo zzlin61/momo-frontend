@@ -2,9 +2,9 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import { MemoryRouter } from 'react-router';
 import { afterEach, describe, expect, it } from 'vitest';
 import { App } from './App';
-import { createMockProductRepository } from '../entities/product/mockProductRepository';
-import type { Product } from '../entities/product/Product';
-import type { ProductRepository } from '../entities/product/ProductRepository';
+import { createMockProductRepository } from '../libs/apiservices/products/mockProductRepository';
+import type { Product } from '../libs/store/products/productModel';
+import type { ProductRepository } from '../libs/store/products/productModel';
 
 afterEach(cleanup);
 function open(path = '/', repository = createMockProductRepository()) {

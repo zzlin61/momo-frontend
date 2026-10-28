@@ -1,8 +1,8 @@
 import { Link } from 'react-router';
-import type { ProductRepository } from '../entities/product/ProductRepository';
-import { ProductArtwork } from '../entities/product/ProductArtwork';
-import { ProductResults } from '../entities/product/ProductResults';
-import { useProducts } from '../entities/product/useProducts';
+import type { ProductRepository } from '../libs/store/products/productModel';
+import { ProductArtwork } from '../components/product/ProductArtwork';
+import { ProductResults } from '../components/product/ProductResults';
+import { useProducts } from '../libs/store/products/useProducts';
 import styles from './HomePage.module.css';
 
 const categories = [['◈', '運動鞋款', '鞋'], ['↗', '跑步訓練', '長跑'], ['◇', '休閒穿搭', '日常'], ['◎', '戶外生活', '步行'], ['≋', '運動配件', '配件'], ['✧', '品牌精選', 'asics']];

@@ -1,8 +1,10 @@
 # apiservices：資料來源 adapter
 
-狀態：**文件範例；沒有真實端點、網路呼叫或 UI 接線**。目前作業仍使用既有 mock repository。
+狀態：**ProductRepository、mockProductRepository與types/ProductRecord已搬遷至此並接入UI資料流程**；沒有真實端點或網路呼叫。以下example.ts.md仍為教學文件。
 
 ## 按領域組織
+
+正式檔案：products/ProductRepository.ts、mockProductRepository.ts、mockProductRepository.test.ts、types/ProductRecord.ts。原有mock語意不變；正式型別與下方假設response分開。
 
 ```text
 apiservices/

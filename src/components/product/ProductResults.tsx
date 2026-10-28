@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import type { ProductState } from './useProducts';
+import type { ProductState } from '../../libs/store/products/productModel';
 import { ProductCard } from './ProductCard';
 import styles from './ProductResults.module.css';
 

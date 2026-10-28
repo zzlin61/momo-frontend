@@ -1,9 +1,9 @@
 
 import { Link, useParams, useSearchParams } from 'react-router';
-import type { ProductRepository } from '../entities/product/ProductRepository';
-import { ProductResults } from '../entities/product/ProductResults';
-import { useProducts } from '../entities/product/useProducts';
-import type { ProductState } from '../entities/product/useProducts';
+import type { ProductRepository } from '../libs/store/products/productModel';
+import { ProductResults } from '../components/product/ProductResults';
+import { useProducts } from '../libs/store/products/useProducts';
+import { projectProductResults } from '../libs/store/products/productRules';
 import styles from './SearchPage.module.css';
 
 export function SearchPage({ repository }: { repository: ProductRepository }) {
@@ -14,11 +14,7 @@ export function SearchPage({ repository }: { repository: ProductRepository }) {
   const brand = params.get('brand') ?? '';
 
 
-  const brands = state.status === 'success' ? [...new Set(state.products.map(product => product.brand))] : [];
-  const filtered: ProductState = state.status === 'success'
-    ? { status: 'success', products: state.products.filter(product => !brand || product.brand === brand).sort((a,b) => sort === 'price-asc' ? a.price-b.price : sort === 'price-desc' ? b.price-a.price : 0) }
-    : state;
-  const count = filtered.status === 'success' ? filtered.products.length : null;
+  const { brands, filtered, count } = projectProductResults(state, brand, sort);
   const update = (key: string, value: string) => { const next = new URLSearchParams(params); if(value) next.set(key,value); else next.delete(key); setParams(next, { replace: true }); };
   return <>
     <nav className={styles.breadcrumb} aria-label="麵包屑"><Link to="/">首頁</Link><span>›</span><span>搜尋結果</span></nav>

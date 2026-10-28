@@ -36,12 +36,13 @@ pnpm preview
 ## 架構
 
 ```text
-src/app/              路由、repository composition、header、全域 tokens
-src/pages/            首頁與搜尋頁組合
-src/features/search/  共用搜尋表單與導頁行為
-src/entities/product/ 型別、repository、async hook、卡片及結果狀態
+src/app/              路由、repository composition、全域 tokens
+src/pages/            頁面組合、Router狀態連接
+src/components/       layout／search／product UI
+src/libs/apiservices/ 資料來源契約、正規化型別、mock adapter
+src/libs/store/       Business模型、商品規則、React狀態hook
+src/libs/utils/       UI純函式
 src/data/             fixtures，僅供 mock adapter 直接讀取
-src/shared/layout/    不依賴上層功能的頁面容器
 ```
 
 預設 repository 在 app 建立一次，頁面接收介面，測試可注入受控 adapter。沒有全域狀態套件、UI framework 或新增套件；保留原始 [實作計畫](IMPLEMENTATION_PLAN.md)。
@@ -68,4 +69,7 @@ src/shared/layout/    不依賴上層功能的頁面容器
 
 ## 分層規範範例
 
-新增的 [src/libs](src/libs/README.md) 說明 apiservices、store（Business）與 UI utils 的責任、依賴方向及7份TypeScript文件範例。所有 `.example.ts.md` 均未接入應用程式；沒有狀態管理套件、真實HTTP呼叫或UI/mock遷移。未來再依實際需求建立 libs/hooks。
+新增的 [src/libs](src/libs/README.md) 說明 apiservices、store（Business）與 UI utils 的責任、依賴方向及7份TypeScript文件範例。所有 `.example.ts.md` 均未接入應用程式；正式程式已依[歸屬對照](docs/layer-migration.md)搬遷至components及libs，保持原UI/mock語意。沒有狀態管理套件或真實HTTP呼叫。未來再依實際需求建立 libs/hooks。
+
+
+搬遷後可執行 `pnpm check:layers` 驗證靜態依賴方向；此腳本使用現有TypeScript套件，沒有新增dependency。實際資料與UI不變，Business仍使用React hook。

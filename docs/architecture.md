@@ -1,35 +1,33 @@
 # 架構
 
-單一 Vite SPA；依賴方向為 app/pages → features/entities/shared、features → entities/shared。shared 不匯入上層，沒有 feature 間互相依賴或 barrel exports。
+單一Vite SPA，依三層責任組織，沒有monorepo、HTTP端點或狀態管理套件。原始IMPLEMENTATION_PLAN保留為baseline；人類授權的歸屬變更與對照見 [layer-migration.md](layer-migration.md)，詳細規範見 [src/libs](../src/libs/README.md)。
 
-## 組合與資料
+## 現行責任
 
-- app/App.tsx 在 composition boundary 建立單一 mock repository，透過 props 將 ProductRepository 傳給兩頁；App 可注入替代 repository 供測試。
-- pages 只組合靜態版面、商品結果與搜尋控制，不持有 fixtures。SearchPage 的排序與品牌為 URL query 狀態。
-- entities/product/Product.ts 與 ProductRepository.ts 定義領域與 Promise 契約。
-- mockProductRepository.ts 是唯一讀取 data/products.ts 的執行時 adapter；fixtures 僅 type-import 商品模型。
-- useProducts 負責 request lifecycle、revision retry 與 effect cleanup。結果連同 keyword/revision 保存，route 改變時立即顯示 loading；已失效的 Promise 無法覆寫新資料。
-- ProductCard、ProductArtwork、ProductResults 是首頁與搜尋頁共用的商品呈現。SVG 沒有遠端圖片來源，穩定 viewBox 保留幾何比例。
-- app/SiteHeader 組合 feature SearchForm 與導覽。shared/PageShell 只提供自然流動的 main 容器。
+- app：路由、預設repository建立一次、測試注入與應用外框組合。
+- pages：頁面組合、Router keyword/query連接；不持有fixtures或商品排序implementation。
+- components/layout：SiteHeader與PageShell；components/search：SearchForm；components/product：商品卡、SVG與結果呈現。它們是UI，不擁有資料來源implementation。
+- libs/apiservices/products：ProductRepository interface、mockProductRepository與測試；types/ProductRecord定義正規化資料。
+- libs/store/products：productModel重用ProductRecord與資料來源契約、宣告ProductState；useProducts協調請求；productRules提供品牌／排序／數量投影。此處是Business，不代表已導入Zustand。
+- libs/utils/formatPrice：UI數字格式化，維持原來NumberFormat('zh-TW')輸出；美元符號及無障礙文案仍由ProductCard負責。
+- data/products：原有12筆fixtures與價格不變，僅mock adapter直接讀取；type-import資料來源型別不形成向上依賴。
 
-## URL 與表單
+依賴：UI → Business → 資料來源interface/types；UI → utils；app composition → 具體adapter → fixtures。apiservices不依賴Business或UI，Business不依賴UI。沒有entities/features/shared的舊runtime轉出口或雙重implementation。
 
-/search/:keyword 經 Router 解碼，表單本地 state 只是草稿，keyword 改變時同步回填。不在輸入時請求；僅顯式提交，trim 後空值／IME 組字不導頁。clear 導回首頁使搜尋 request cleanup，立即清空並保留欄位焦點。表單不因 route key 重建。
+## 資料與請求
 
-sort 與 brand 存於 query，排序／篩選在固定小資料集上執行；legacy _isFuzzy/searchType 不參與 matching。按鈕排序不引入 Select 套件。首頁與結果均一次呈現全部小資料集，不建立虛假的頁數。
+App的預設mock延遲180ms，透過ProductRepository props注入兩頁；測試可注入受控adapter。useProducts保留revision retry、keyword關聯結果、effect cleanup與過期回應防護。首頁featured與搜尋各有hook instance，不共用一個全域products槽。
 
-## Adapter 與錯誤
+mock adapter保留Promise、固定錯誤／延遲、名稱／品牌／tags匹配、空白查詢空結果與回傳複製。沒有加入假設的response DTO或HTTP implementation。ProductRecord與Business Product目前形狀一致，透過type alias重用，不作無差異的資料拷貝。
 
-createMockProductRepository({ delayMs, error }) 支援固定行為。預設 app 延遲180ms，可見載入狀態；測試可使用零延遲、假時鐘或受控 Promise。respond 複製商品與 tags，避免外部修改污染 fixtures。未來替換授權 API adapter 時保留介面與 UI state 契約。
+## URL與UI
 
-## 設計與驗證
+Router解碼/search/:keyword，keyword是canonical state。sort/brand存於query，legacy query不影響matching；草稿與IME/focus由SearchForm處理。clear回首頁使舊搜尋cleanup，表單不因route key重建。
 
-DESIGN.md 記錄設計意圖與 canonical owners；src/app/global.css 擁有 runtime tokens。搜尋表單與結果元件無重複實作，無 UI framework。
+SearchPage將state、brand、sort交給productRules投影；不重複保存count或篩選清單。投影保留原排序及品牌語意，不在本次目錄重構改變無效sort或error標題文案等既有行為。範例中的正規化策略尚未啟用。
 
-repository tests 驗證資料契約；App integration tests 驗證使用者操作；scripts/browser-smoke.mjs 使用 Node 內建 WebSocket 操作隔離 Chrome，無新增應用依賴。瀏覽器截圖、結果與限制列於 docs。
+## 驗證與設計
 
-## 後續三層規範與範例（未接入）
+DESIGN.md記錄設計與canonical UI owner；app/global.css擁有runtime tokens。CSS、SVG與markup保持，沒有UI重設計。原有repository與App行為測試繼續驗證資料與搜尋契約，scripts/browser-smoke.mjs驗證實際瀏覽器流程及RWD。
 
-人類已確認先新增 [src/libs 分層規範](../src/libs/README.md)，包含 apiservices、store（Business）與 UI utils。未來共用 hooks 有實際需要再建立。範例採 `.example.ts.md`，不是可執行或可匯入的 module；未安裝狀態管理套件，也未搬移目前頁面、hook、mock 或 fixtures。
-
-此為原始計畫後續的設計補充，不代表現行程式已完成三層遷移。實際遷移需另行確認範圍，維持 URL 狀態所有權、adapter seam 與現有使用者行為測試。
+7份example.ts.md仍是教學文件，與正式ts檔有清楚區分；狀態管理及真實response契約需要未來另外決定。

@@ -34,3 +34,11 @@
 - 範例response是教學假設，mapper明確驗證unknown；不虛構momo端點或實際HTTP契約。Business模型在資料已足夠時直接重用正規化形狀，不增加無意義的二次拷貝。
 - 優點是作業能呈現分工、狀態所有權與未來測試方向；成本是文件本身尚不證明runtime分層，後續遷移需要重新驗證行為。
 - 正式遷移時以新module取代舊implementation並更新文件，不長期維護兩套路徑；libs/hooks等實際跨領域重用需求再建立。
+
+## 三層歸屬搬遷
+
+人類授權更新歸屬並直接執行搬遷，對照見layer-migration.md。已採components作為UI分類，apiservices擁有mock與資料來源型別、store擁有Business規則及原本React hook，utils承接原有格式化；不導入新套件、不修改mock資料或畫面。
+
+原有entities/product混合UI、資料來源與Business，因此按責任拆開而不保留兩套路徑。ProductRecord由資料來源定義，Business的Product目前重用形狀，避免反向依賴。此型別alias是刻意避免無差異轉換，不是新增另一個runtime資料模型。
+
+搬遷保留既有unknown sort處理與error時標題文字等語意，待另一批行為改善再處理；教學範例的正規化及store契約不等於正式implementation。

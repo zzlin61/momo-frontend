@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 import { Route, Routes, useLocation, useMatch } from 'react-router';
 import { HomePage } from '../pages/HomePage';
 import { SearchPage } from '../pages/SearchPage';
-import { PageShell } from '../shared/layout/PageShell';
-import { SiteHeader } from './SiteHeader';
-import { createMockProductRepository } from '../entities/product/mockProductRepository';
-import type { ProductRepository } from '../entities/product/ProductRepository';
+import { PageShell } from '../components/layout/PageShell';
+import { SiteHeader } from '../components/layout/SiteHeader';
+import { createMockProductRepository } from '../libs/apiservices/products/mockProductRepository';
+import type { ProductRepository } from '../libs/store/products/productModel';
 import styles from './App.module.css';
 
 const defaultRepository = createMockProductRepository({ delayMs: 180 });
