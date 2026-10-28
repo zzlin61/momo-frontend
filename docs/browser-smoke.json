@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-28T07:44:10.095Z",
+  "date": "2026-10-28T08:01:37.247Z",
   "browser": "Chrome headless via CDP",
   "checks": [
     "home 12 products",
@@ -19,7 +19,10 @@
     "gallery controls",
     "product mobile accessibility and responsive layout",
     "return to sorted/filtered search",
-    "unknown product distinct state"
+    "unknown product distinct state",
+    "tabs preserve complete URL and keyboard focus",
+    "recommendations exclude current product",
+    "recent products persist after reload and clear"
   ],
   "screenshots": [
     "home-desktop",
@@ -29,7 +32,10 @@
     "search-mobile",
     "product-desktop",
     "product-mobile",
-    "product-mobile-options"
+    "product-mobile-options",
+    "product-tabs-discovery-desktop",
+    "product-tabs-discovery-mobile",
+    "product-history-mobile"
   ],
   "errors": [],
   "external": []

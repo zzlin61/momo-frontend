@@ -37,3 +37,7 @@ store/
 ## 商品詳情Business
 
 useProductDetail已接入：以repository／productId／revision辨識回應，提供loading/error/not-found/success與retry，cleanup忽略失效結果。productDetailRules驗證顏色、可選尺寸、整數數量範圍並計算選購總價；UI仍擁有選項草稿。沒有將確認結果放進全域cart或套件store。
+
+## 推薦與瀏覽紀錄Business
+
+productDiscoveryRules依同品牌優先、原順序選出最多4件且排除當前，歷史以成功商品的canonical ID去重、最近在前、最多8筆。useProductDiscovery維持推薦及歷史各自的非同步結果，pending request按repository與key去重，cleanup與結果identity避免舊回應；清除歷史立即讓過期結果無效。首頁／搜尋流程不受影響。

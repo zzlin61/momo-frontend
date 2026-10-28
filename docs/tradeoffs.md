@@ -51,3 +51,10 @@
 - 提供具體的選購確認與總額，不實作購物車、登入或結帳。若未來新增交易，需另行確認狀態持久化及領域契約。
 - 詳情hook沿用現有明確effect模式，不為此新添通用請求框架；其repository/id/revision快照與cleanup保持新舊請求隔離。
 - 頁面狀態與規則有測試；未做真站像素比對、多平台螢幕閱讀器與正式交易流程。
+
+## Tabs與推薦／瀏覽紀錄
+
+- 依使用者本次指示將錨點改為頁內tab state，不建立URL query或hash，也不使用第三方tab套件；支援ARIA與原生button鍵盤操作。
+- 推薦為固定mock商品的同品牌優先規則，不是個人化推薦演算法，沒有新增HTTP契約。
+- 瀏覽紀錄採本機localStorage，只存canonical IDs、最多8筆；不存價格、名稱、時間戳或個資。不傳外部，可清除。若storage損壞／不可用須降級，不影響商品詳情。
+- 使用兩個獨立Git worktree由subagents並行開發，root負責ProductPage接線、整合及端對端驗證；不新增狀態管理套件。

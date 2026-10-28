@@ -36,3 +36,7 @@ apiservices/
 ## 商品詳情資料來源
 
 ProductRepository已新增getById(productId)，回傳ProductDetailRecord或null；支援stable id與可選productCode。types/ProductDetailRecord.ts定義自編規格／配色／尺寸形狀，data/productDetails.ts提供本機資料。巢狀結果深複製，沿用固定delay/error；沒有真正HTTP回應或DTO清洗需求，教學mapper仍未啟用。
+
+## 最近瀏覽的本機adapter
+
+recentProductStorage封裝momo.recent-products.v1的localStorage讀寫與損毀／儲存不可用處理，只接受／回傳字串ID資料。canonical記錄、去重、排序與8筆上限由Business控制；不傳送外部。無法持久化時仍允許商品瀏覽，跨刷新歷史不保證保留。

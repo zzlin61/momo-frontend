@@ -39,3 +39,9 @@ ProductRepository新增getById，接受stable id或productCode，回傳ProductDe
 mock adapter支援與其他操作相同的固定delay/error，詳情以structuredClone隔離巢狀資料。Business新增useProductDetail，以repository/id/revision關聯結果並用effect cleanup防止舊回應；productDetailRules驗證選項、數量並計算總價。未安裝狀態管理套件。
 
 ProductPage組合圖集、ProductPurchase、描述及規格。商品卡Link在Router state保留內部來源路徑；返回只接受/或/search/開頭，否則回品牌搜尋。商品頁legacy query不參與mock查找。頁面依載入／錯誤／不存在／成功設定title；顏色切換清空尺寸，商品id切換重設整個選購草稿，所有選購確認都是本頁示範。
+
+## 頁內tabs、推薦與本機瀏覽紀錄
+
+本次人類明確要求替換錨點：商品介紹／規格／選購說明切為ProductInfoTabs，UI本地狀態不更新pathname、query或hash。推薦／歷史由獨立ProductDiscovery接在tabs之後，頁面維持組合責任。
+
+商品推薦從同一repository取得mock候選，排除當前、同品牌優先且保持穩定順序。Business負責規則、非同步與歷史去重；瀏覽器儲存adapter隔離localStorage存取，UI不讀fixtures或直接讀寫storage。成功詳情才寫入canonical ID，最多8筆、最近在前；顯示排除當前，清除立即更新。這是使用者要求的本機紀錄，不傳至外部。

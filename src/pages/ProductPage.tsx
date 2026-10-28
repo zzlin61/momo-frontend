@@ -1,3 +1,5 @@
+import { ProductInfoTabs } from '../components/product/ProductInfoTabs';
+import { ProductDiscovery } from '../components/product/ProductDiscovery';
 import { useEffect } from 'react';
 import { Link, useLocation, useParams } from 'react-router';
 import type { ProductRepository } from '../libs/store/products/productModel';
@@ -36,12 +38,7 @@ export function ProductPage({ repository }: { repository: ProductRepository }) {
     <nav className={styles.breadcrumb} aria-label="麵包屑"><Link to="/">首頁</Link><span>›</span><Link to={'/search/' + encodeURIComponent(product.brand)}>{product.brand}</Link><span>›</span><span>{product.name}</span></nav>
     <div className={styles.pageTop}><span>YOUR EVERYDAY, WELL CHOSEN.</span><Link to={back}>返回商品列表</Link></div>
     <ProductPurchase key={product.id} product={product} />
-    <nav className={styles.sectionNav} aria-label="商品資訊導覽"><a href="#product-description">商品介紹</a><a href="#product-specifications">商品規格</a><a href="#product-notice">選購說明</a></nav>
-    <section id="product-description" className={styles.description}>
-      <div><span>MADE FOR YOUR EVERYDAY</span><h2>找到你的日常節奏。</h2><p>{product.description}</p></div>
-      <div className={styles.featureList}>{product.features.map((feature, index) => <div key={feature}><span>{String(index + 1).padStart(2, '0')}</span><p>{feature}</p></div>)}</div>
-    </section>
-    <section id="product-specifications" className={styles.specifications}><h2>商品規格</h2><dl>{product.specifications.map(item => <div key={item.label}><dt>{item.label}</dt><dd>{item.value}</dd></div>)}</dl></section>
-    <section id="product-notice" className={styles.notice}><h2>選購說明</h2><p>此頁為前端展示作品。商品圖像、規格、可選尺寸、數量上限與價格皆為示範設定，不代表實際商品或庫存。選購確認不會產生訂單、付款或配送安排。</p><Link to={back}>繼續探索商品 →</Link></section>
+    <ProductInfoTabs key={product.id} product={product} back={back} />
+    <ProductDiscovery key={product.id} product={product} repository={repository} />
   </>;
 }

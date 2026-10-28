@@ -100,3 +100,18 @@
 - Chrome smoke：保留原首頁／搜尋驗證，新增商品直接URL／legacy query、缺頁、選項驗證與focus、換色清空尺寸／確認、數量及總額、圖集、native radio方向鍵、返回原sort/brand、mobile AX tree及320至1440px無溢出。無runtime例外或外部HTTP；新增3張商品桌面／手機／選項PNG，已視覺檢視。
 - 文件同步：AGENTS、README、DESIGN、architecture、tradeoffs、comparison及libs規範；仍未做真站pixel comparison、完整螢幕閱讀器或正式交易驗證。先前Python/designmd工具限制未解決，未宣稱通過額外靜態稽核。
 - 依既有agent commit授權提交，建議訊息feat(product): add mock product detail page，hash見本提交git log。下一步由人類檢視商品頁視覺與流程後調整。
+
+### 2026-10-28 16:02 +08:00 — 平行worktree：頁內tabs、推薦與瀏覽紀錄
+
+- 人類要求：商品介紹／規格／選購說明改為同頁tab，不改URL；底部新增商品推薦與瀏覽紀錄，明確要求subagents開worktree並行。
+- 使用using-git-worktrees與dispatching-parallel-agents流程。先測baseline 37/37；內建create_worktree回覆pending後查詢得到not a git repository（工具工作根目錄不在專案），未重複建立pending操作，改用Git fallback。
+- 設定.worktrees忽略並提交df12543；建立獨立branch/worktree：.worktrees/product-tabs（feat/product-info-tabs）及.worktrees/product-discovery（feat/product-discovery）。各自offline/frozen-lockfile安裝154個既有套件，未下載或新增dependency。
+- Tabs agent在自身worktree先紅後綠：新增ProductInfoTabs及4個測試，含ARIA、roving tabIndex、Arrow/Home/End、換商品重設與URL保留；全套41 tests/lint/layers/build通過，提交e40cf4c。root cherry-pick為44d62d4。
+- Discovery agent在另一worktree先紅後綠：推薦／本機storage adapter／Business rules/hook及UI，含排除自己、同品牌優先、去重、最多8筆canonical ID、storage失敗、StrictMode pending去重及清除後舊回應防護；全套45 tests/lint/layers/build通過，提交fab0181。root cherry-pick為f11c7f7。
+- Root先寫2個整合測試觀察缺少tabs/discovery失敗，再ProductPage接線、移除舊hash anchor及頁面重複CSS；各module以product.id重設。root補Router URL不變、返回／跨商品、持久化重掛及清除整合驗證。
+- 整合首次Vitest掃描了.worktrees副本，得到137 tests；發現後在vite.config限制include為src/**/*.test.{ts,tsx}，主工作樹實際51 tests，避免將副本重複計數。
+- Chrome smoke補tabs click及真實End鍵／focus與完整URL不變、推薦排除自己、跨商品history、重新整理還原、clear、桌面／手機新截圖。首次清除按鈕selector以不存在的aria-label定位失敗，改用實際button名稱後通過；不是產品功能失敗。
+- 最終check:layers exit0（30runtime／94 imports）、lint exit0、test 10 files / 51 tests passed、build exit0（75 modules）、browser-smoke exit0；無runtime例外或外部HTTP。已視覺檢視tabs/推薦桌面、手機與history手機截圖。
+- 第三位唯讀reviewer檢查整合後ARIA、URL、race、storage、canonical key及層級，未發現Critical/Important或有價值Minor；其審查未重跑tests，驗證結果來自主代理。
+- README、AGENTS、DESIGN、architecture、tradeoffs、comparison與libs規範同步。歷史只存本機商品ID、不存個資／價格／時間戳、不傳外部；storage受限不保證跨刷新保存，但不能使詳情失敗。
+- 兩個worktree及feature branches保留供人類檢視；主工作樹將提交整合紀錄。未做push/merge、未重寫history、未新增套件。

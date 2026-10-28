@@ -100,8 +100,15 @@ loading 為固定區域 app spinner；error 提供重試；empty 提供 asics �
 
 ## 商品詳情擴充
 
-/product/:productId由人類本次授權新增，使用與首頁／搜尋相同shell。桌面上半部左右圖集／選購資訊，750px以下單欄；商品圖保留比例。下方商品介紹、規格、說明以錨點導覽，沒有假tab或無作用交易按鈕。
+/product/:productId由人類本次授權新增，使用與首頁／搜尋相同shell。桌面上半部左右圖集／選購資訊，750px以下單欄；商品圖保留比例。下方商品介紹、規格、說明使用頁內tabs；只切換面板，不變更URL。再下方為商品推薦與瀏覽紀錄；沒有無作用交易按鈕。
 
 ProductGallery與ProductPurchase歸components/product，ProductPage只連接路由、狀態與頁面組合。原生fieldset/legend/radio保有Tab及方向鍵操作；隱藏radio仍可focus，label以focus-within呈現輪廓。錯誤有alert與欄位說明，確認有具名status；選項或數量改變時清除過期確認。未使用select、modal或新的互動套件。
 
 顏色／尺寸／數量為UI草稿，Business驗證是否可選與數量範圍並計算確認總價；不建立cart、付款或訂單。圖集僅自製SVG的示意視角，不是官方產品照片。參考頁只用於資訊結構，不宣稱逐像素一致或真實報價。
+
+
+## 頁內tabs與商品探索延伸
+
+ProductInfoTabs擁有純UI狀態，使用tablist/tab/tabpanel與roving tabindex；滑鼠及左右鍵/Home/End切換不更新Router或hash。預設介紹，換商品重設。隱藏面板仍有正確aria關聯，只有目前面板可被操作。沿用現有粉紅selected與focus-visible語言。
+
+商品推薦與瀏覽紀錄沿用ProductCard及2至4欄網格。推薦排除當前並優先同品牌，最多4件；歷史只顯示曾成功查看的其他商品，不預填假紀錄。localStorage僅存最多8筆canonical IDs，頁面提供清除；儲存受限仍能使用詳情頁，不向外傳送。UI以明確heading/空狀態/載入與重試呈現，不暗示個人化模型或真實銷量。

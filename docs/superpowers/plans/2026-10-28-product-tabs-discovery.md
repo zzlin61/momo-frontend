@@ -1,4 +1,4 @@
-﻿# Product tabs, recommendations and recent history plan
+# Product tabs, recommendations and recent history plan
 
 2026-10-28，人類要求頁內tabs不更改URL，並新增底部商品推薦與瀏覽紀錄；明確要求subagents各開worktree並行。
 
@@ -15,3 +15,7 @@
 - 推薦與歷史可點進各自商品；推薦不含自己，歷史只來自真實成功瀏覽；重新整理可還原；同品號/stable id不重複；loading/error/empty清楚，清除立即更新。
 - 現有商品選購與37baseline測試保留。最終check:layers/lint/test/build及Chrome桌面/手機/鍵盤/URL/歷史跨頁刷新驗證；無外部HTTP。
 - 每位agent在獨立worktree工作、提交自己的feature commit，不改ProductPage或共同文件避免衝突；root更新整體協作紀錄。
+
+## Completion
+
+兩個worktree agent各自提交並由root cherry-pick整合。原始分支feat/product-info-tabs與feat/product-discovery及worktree保留；主工作樹51tests、lint、layers、build與Chrome smoke全部通過，另有唯讀review無需修正發現。詳細hash與實際工具限制見ai-collaboration.md。

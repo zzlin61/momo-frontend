@@ -59,6 +59,9 @@ After each batch:
 - Color/size/quantity selection and confirmation are local demonstrations, not a cart, checkout or order. Validate options in Business; UI owns draft selection and focus.
 - Product code 15745582 maps to a local demo. Reference pages guide structure only; retain original demo names/prices and locally authored artwork.
 
+- Product introduction/specifications/purchase notes are local accessible tabs; tab changes must not alter pathname, query or hash.
+- Product recommendations exclude the current item and use deterministic mock candidates. Recently viewed products contain only successful canonical product IDs, deduplicated and capped at eight; persist locally, exclude the current item from display, and offer clear. Storage failure must not break product detail.
+
 ## Tests and quality gates
 
 - At least repository search tests and search-route UI tests for success/empty/navigation.

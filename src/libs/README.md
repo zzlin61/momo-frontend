@@ -69,3 +69,7 @@ URL與請求快照不是兩個可分別修改的查詢來源。首頁與搜尋�
 ## 商品詳情擴充
 
 商品路由／productId由Router擁有；資料來源新增getById與ProductDetailRecord，Business新增useProductDetail／productDetailRules，UI新增ProductPage／ProductGallery／ProductPurchase。商品選購確認只存在本頁，離開或換商品即重設，不是購物車。層級依賴仍以check:layers檢查。
+
+## Tabs與Discovery正式module
+
+ProductInfoTabs位於components/product，只有UI本地tab state。ProductDiscovery組合推薦／歷史；Business useProductDiscovery與productDiscoveryRules處理候選排序、排除當前、canonical歷史ID及async；apiservices/products/recentProductStorage隔離本機儲存。UI不直接讀寫localStorage或fixtures，沒有新套件store。
